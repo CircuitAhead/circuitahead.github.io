@@ -9,7 +9,7 @@ export function createMotion() {
   try {
     const saved = localStorage.getItem(storageKey);
     if (validChoice(saved)) choice = saved;
-  } catch { /* The control also works when storage is unavailable. */ }
+  } catch { /* Use the device preference when storage is unavailable. */ }
   if (validChoice(requested)) {
     choice = requested;
     try { localStorage.setItem(storageKey, choice); } catch { /* Page-local choice. */ }
@@ -27,50 +27,6 @@ export function createMotion() {
     if (query.addEventListener) query.addEventListener('change', listener);
     else query.addListener?.(listener);
   };
-
-  // A device preference is the default, not a permanent lock. Visitors can
-  // explicitly enable effects on this site without changing their OS settings.
-  const control = document.createElement('button');
-  control.type = 'button';
-  control.className = 'motion-toggle';
-  control.dataset.i18nIgnore = '';
-  const icon = document.createElement('span');
-  icon.className = 'motion-toggle-icon';
-  icon.setAttribute('aria-hidden', 'true');
-  const label = document.createElement('span');
-  label.className = 'motion-toggle-label';
-  control.append(icon, label);
-  function updateControl() {
-    const it = root.lang === 'it';
-    const on = !reduced();
-    control.setAttribute('aria-pressed', String(on));
-    control.setAttribute('aria-label', on
-      ? (it ? 'Disattiva animazioni' : 'Turn animations off')
-      : (it ? 'Attiva animazioni' : 'Turn animations on'));
-    control.title = control.getAttribute('aria-label');
-    label.textContent = on
-      ? (it ? 'Animazioni attive' : 'Animations on')
-      : (it ? 'Attiva animazioni' : 'Enable animations');
-  }
-  const compact = matchMedia('(max-width: 700px)');
-  function placeControl() {
-    const header = document.querySelector('.header-inner');
-    const menu = document.querySelector('.mobile-nav');
-    if (compact.matches && menu) menu.append(control);
-    else header?.insertBefore(control, header.querySelector('.menu-button'));
-  }
-  placeControl();
-  listenMedia(compact, placeControl);
-  control.addEventListener('click', () => {
-    choice = reduced() ? 'on' : 'off';
-    try { localStorage.setItem(storageKey, choice); } catch { /* Page-local choice. */ }
-    const url = new URL(location.href);
-    if (url.searchParams.has('motion')) {
-      url.searchParams.delete('motion');
-      history.replaceState(null, '', url);
-    }
-    syncMotion();
-  });
 
   function finish(record) {
     record.cancel?.();
@@ -263,7 +219,6 @@ export function createMotion() {
   }
 
   function refreshLanguage() {
-    updateControl();
     records.forEach(record => {
       const wasStarted = record.started;
       if (record.cancel) finish(record);
@@ -288,7 +243,6 @@ export function createMotion() {
     finishAll();
     root.dataset.motion = reduced() ? 'reduced' : 'enabled';
     root.dataset.motionSource = choice ? 'visitor' : 'system';
-    updateControl();
     if (!reduced()) {
       records.forEach(record => { record.started = false; });
       try { observe(); } catch { finishAll(); observer?.disconnect(); }

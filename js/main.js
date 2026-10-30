@@ -248,7 +248,7 @@ import translations from "./translations.js?v=09c089bf579e";
   document.querySelectorAll('#current-year,#rq-year').forEach(element => { element.textContent = String(new Date().getFullYear()); });
   applyLanguage(language);
   // Animation loading must never block translation, navigation or app previews.
-  import('./motion.js?v=564de1070002').then(({createMotion}) => {
+  import('./motion.js?v=566dda1c863f').then(({createMotion}) => {
     motion = createMotion();
   }).catch(() => { /* Core content and interactions remain available. */ });
 })();
