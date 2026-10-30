@@ -127,7 +127,7 @@ import translations from "./translations.js?v=09c089bf579e";
     if (!event.target.closest('.site-header')) closeMenu();
   });
   document.addEventListener('keydown', event => { if (event.key === 'Escape') closeMenu(true); });
-  const desktop = matchMedia('(min-width: 1021px)');
+  const desktop = matchMedia(page === 'home' ? '(min-width: 860px)' : '(min-width: 1021px)');
   desktop.addEventListener('change', () => { if (desktop.matches) closeMenu(); });
 
   // Screen selection uses the original link targets as its source of truth.

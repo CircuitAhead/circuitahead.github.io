@@ -1,0 +1,260 @@
+/* Home composition. Height follows content, including tall desktop-mode viewports. */
+.hero {
+  min-height: 0;
+}
+
+@media (min-width: 701px) {
+  body[data-page="home"] {
+    --container: 1280px;
+  }
+
+  .hero-grid {
+    min-height: 0;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 24px;
+    padding-block: 44px 48px;
+  }
+
+  .hero h1 {
+    font-size: clamp(3.2rem, 5.8vw, 4.8rem);
+    line-height: 1;
+  }
+
+  .hero-kicker {
+    margin-bottom: 22px;
+  }
+
+  .hero-description {
+    margin-top: 24px;
+    font-size: 1.05rem;
+    line-height: 1.7;
+  }
+
+  .hero-actions {
+    margin-top: 28px;
+  }
+
+  .hero-notes {
+    margin-top: 28px;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  .hero-visual {
+    min-height: 350px;
+  }
+
+  .circuit-scene {
+    width: min(100%, 440px);
+  }
+
+  .visual-glow {
+    width: min(100%, 440px);
+    height: 440px;
+  }
+
+  .logo-stage {
+    width: min(68%, 270px);
+    min-height: 220px;
+    padding: 32px;
+  }
+
+  .scroll-indicator {
+    display: none;
+  }
+
+  .section {
+    padding-block: clamp(56px, 5vw, 80px);
+  }
+
+  .section h2,
+  .section-heading h2,
+  .statement-card h2 {
+    font-size: clamp(2.25rem, 3.5vw, 3rem);
+    line-height: 1.08;
+  }
+
+  .split-heading {
+    gap: 32px;
+  }
+
+  .intro-copy p {
+    font-size: 1rem;
+    line-height: 1.7;
+  }
+
+  .section-top {
+    margin-bottom: 32px;
+    gap: 32px;
+  }
+
+  .product-showcase {
+    min-height: 0;
+  }
+
+  .product-content {
+    padding: clamp(28px, 4vw, 52px);
+  }
+
+  .product-meta {
+    margin-bottom: 32px;
+  }
+
+  .product-description {
+    font-size: clamp(1.25rem, 2vw, 1.65rem);
+    line-height: 1.4;
+  }
+
+  .product-art-real {
+    min-height: 0;
+    padding: 28px;
+  }
+
+  .product-device {
+    width: min(265px, 85%);
+  }
+
+  .principles-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+  }
+
+  .principle-card,
+  .principle-card:last-child {
+    grid-column: auto;
+    min-height: 0;
+    padding: clamp(22px, 2.2vw, 30px);
+  }
+
+  .principle-number {
+    position: absolute;
+    top: 28px;
+    right: 26px;
+    margin: 0;
+  }
+
+  .principle-symbol {
+    width: 42px;
+    height: 42px;
+    margin-bottom: 22px;
+  }
+
+  .principle-card h3 {
+    font-size: 1.125rem;
+    line-height: 1.35;
+    margin-bottom: 10px;
+  }
+
+  .principle-card p {
+    line-height: 1.65;
+  }
+
+  .statement-section {
+    padding-block: 0 48px;
+  }
+
+  .statement-card {
+    padding: clamp(32px, 4vw, 52px);
+  }
+
+  .statement-card > p:last-child {
+    margin-top: 22px;
+    font-size: 1rem;
+    line-height: 1.7;
+  }
+
+  .cta-section {
+    padding-block: 32px 40px;
+  }
+
+  .cta-inner {
+    gap: 28px;
+    padding-bottom: 28px;
+  }
+
+  .site-footer {
+    padding-block: 32px 16px;
+  }
+
+  .footer-main {
+    gap: 32px;
+    padding-bottom: 32px;
+  }
+
+  .footer-columns {
+    gap: 42px;
+  }
+
+  .footer-bottom {
+    min-height: 56px;
+  }
+}
+
+/* At desktop-mode widths there is room for genuine side-by-side composition. */
+@media (min-width: 860px) {
+  .hero-grid {
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr);
+    gap: clamp(28px, 3.5vw, 56px);
+    padding-block: clamp(40px, 4vw, 64px) 48px;
+  }
+
+  .hero-visual {
+    min-height: clamp(350px, 32vw, 440px);
+  }
+
+  .split-heading {
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr);
+    gap: clamp(36px, 5vw, 72px);
+    align-items: center;
+  }
+
+  .section-top {
+    flex-direction: row;
+    align-items: end;
+  }
+
+  .product-showcase {
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr);
+    align-items: stretch;
+  }
+
+  .statement-card {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr);
+    column-gap: clamp(32px, 5vw, 72px);
+    align-items: center;
+  }
+
+  .statement-eyebrow {
+    grid-column: 1 / -1;
+    margin-bottom: 20px;
+  }
+
+  .statement-card > p:last-child {
+    margin: 0;
+  }
+
+  .cta-inner {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  body[data-page="home"] .desktop-nav {
+    display: flex;
+    gap: 24px;
+  }
+
+  body[data-page="home"] .header-inner {
+    gap: 20px;
+  }
+
+  body[data-page="home"] .header-contact,
+  body[data-page="home"] .site-language-switcher {
+    margin-left: 0;
+  }
+
+  body[data-page="home"] .menu-button,
+  body[data-page="home"] .mobile-nav {
+    display: none;
+  }
+}

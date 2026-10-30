@@ -15,7 +15,7 @@ Keep screenshots in `assets/remoriq-*.jpg`. They are the original 698 × 1536 ca
 
 `js/language.js` chooses IT/EN using a manual selection, browser language or the Europe/Rome timezone. `js/main.js` applies shared navigation and gallery behavior; `js/translations.js` keeps the bilingual copy separate from interaction code. Storage exceptions do not block the page. `?lang=it` and `?lang=en` allow explicit previews. App screenshots remain in their original Italian language.
 
-The shared stylesheet contains the home, support and privacy layouts. Product styles are isolated in `css/remoriq.css`.
+The shared stylesheet contains the home, support and privacy layouts. Product styles are isolated in `css/remoriq.css`. The home composition is in `css/home.css`: content determines section heights, and its side-by-side desktop layout starts at 860px.
 
 Before publishing:
 
