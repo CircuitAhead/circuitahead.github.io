@@ -2,8 +2,19 @@
 export function createMotion() {
   const root = document.documentElement;
   const preference = matchMedia('(prefers-reduced-motion: reduce)');
-  const explicitlyOff = new URLSearchParams(location.search).get('motion') === 'off';
-  const reduced = () => preference.matches || explicitlyOff;
+  const storageKey = 'circuitahead-motion';
+  const requested = new URLSearchParams(location.search).get('motion');
+  const validChoice = value => value === 'on' || value === 'off';
+  let choice = null;
+  try {
+    const saved = localStorage.getItem(storageKey);
+    if (validChoice(saved)) choice = saved;
+  } catch { /* The control also works when storage is unavailable. */ }
+  if (validChoice(requested)) {
+    choice = requested;
+    try { localStorage.setItem(storageKey, choice); } catch { /* Page-local choice. */ }
+  }
+  const reduced = () => choice === 'off' || (choice !== 'on' && preference.matches);
   const records = new Map();
   const imageTokens = new WeakMap();
   let observer;
@@ -12,6 +23,54 @@ export function createMotion() {
   const canAnimate = typeof IntersectionObserver === 'function' && typeof Element.prototype.animate === 'function';
   const canClip = typeof CSS !== 'undefined' && CSS.supports('clip-path', 'path("M0 0H10V10H0Z")');
   const segmenter = typeof Intl.Segmenter === 'function' ? new Intl.Segmenter(undefined, {granularity: 'grapheme'}) : null;
+  const listenMedia = (query, listener) => {
+    if (query.addEventListener) query.addEventListener('change', listener);
+    else query.addListener?.(listener);
+  };
+
+  // A device preference is the default, not a permanent lock. Visitors can
+  // explicitly enable effects on this site without changing their OS settings.
+  const control = document.createElement('button');
+  control.type = 'button';
+  control.className = 'motion-toggle';
+  control.dataset.i18nIgnore = '';
+  const icon = document.createElement('span');
+  icon.className = 'motion-toggle-icon';
+  icon.setAttribute('aria-hidden', 'true');
+  const label = document.createElement('span');
+  label.className = 'motion-toggle-label';
+  control.append(icon, label);
+  function updateControl() {
+    const it = root.lang === 'it';
+    const on = !reduced();
+    control.setAttribute('aria-pressed', String(on));
+    control.setAttribute('aria-label', on
+      ? (it ? 'Disattiva animazioni' : 'Turn animations off')
+      : (it ? 'Attiva animazioni' : 'Turn animations on'));
+    control.title = control.getAttribute('aria-label');
+    label.textContent = on
+      ? (it ? 'Animazioni attive' : 'Animations on')
+      : (it ? 'Attiva animazioni' : 'Enable animations');
+  }
+  const compact = matchMedia('(max-width: 700px)');
+  function placeControl() {
+    const header = document.querySelector('.header-inner');
+    const menu = document.querySelector('.mobile-nav');
+    if (compact.matches && menu) menu.append(control);
+    else header?.insertBefore(control, header.querySelector('.menu-button'));
+  }
+  placeControl();
+  listenMedia(compact, placeControl);
+  control.addEventListener('click', () => {
+    choice = reduced() ? 'on' : 'off';
+    try { localStorage.setItem(storageKey, choice); } catch { /* Page-local choice. */ }
+    const url = new URL(location.href);
+    if (url.searchParams.has('motion')) {
+      url.searchParams.delete('motion');
+      history.replaceState(null, '', url);
+    }
+    syncMotion();
+  });
 
   function finish(record) {
     record.cancel?.();
@@ -108,7 +167,9 @@ export function createMotion() {
     const priority = element.style.getPropertyPriority('clip-path');
     let frame = 0;
     let previous = -1;
-    const start = performance.now() + delay;
+    // Start on a rendered frame: a busy desktop's first paint may arrive long
+    // after initialization, and must not consume the entire typing duration.
+    let start = null;
     const duration = Math.min(1250, Math.max(560, boxes.length * 18));
     const cancel = () => {
       cancelAnimationFrame(frame);
@@ -120,6 +181,7 @@ export function createMotion() {
     record.cancel = cancel;
     element.style.clipPath = 'inset(0 100% 0 0)';
     const tick = now => {
+      if (start === null) start = now + delay;
       const fraction = Math.min(1, Math.max(0, (now - start) / duration));
       const count = Math.floor(fraction * boxes.length);
       if (count !== previous) {
@@ -201,6 +263,7 @@ export function createMotion() {
   }
 
   function refreshLanguage() {
+    updateControl();
     records.forEach(record => {
       const wasStarted = record.started;
       if (record.cancel) finish(record);
@@ -220,17 +283,24 @@ export function createMotion() {
     image.animate([{opacity: .45}, {opacity: 1}], {duration: 240, easing: 'ease-out'});
   }
 
-  collect();
-  try { observe(); } catch { finishAll(); observer?.disconnect(); }
-  root.dataset.motion = reduced() ? 'reduced' : 'enabled';
-  preference.addEventListener('change', () => {
+  function syncMotion() {
+    observer?.disconnect();
+    finishAll();
     root.dataset.motion = reduced() ? 'reduced' : 'enabled';
-    if (reduced()) { observer?.disconnect(); finishAll(); }
-    else {
-      records.forEach(record => { record.started = true; });
-      // Resume with readable content; only a future page load starts a new sequence.
-      finishAll();
+    root.dataset.motionSource = choice ? 'visitor' : 'system';
+    updateControl();
+    if (!reduced()) {
+      records.forEach(record => { record.started = false; });
+      try { observe(); } catch { finishAll(); observer?.disconnect(); }
     }
+  }
+  collect();
+  syncMotion();
+  listenMedia(preference, syncMotion);
+  addEventListener('storage', event => {
+    if (event.key !== storageKey && event.key !== null) return;
+    choice = validChoice(event.newValue) ? event.newValue : null;
+    syncMotion();
   });
   document.addEventListener('focusin', event => {
     for (const record of records.values()) {
@@ -248,7 +318,9 @@ export function createMotion() {
     if (document.hidden) records.forEach(record => { if (record.cancel) finish(record); });
   });
   addEventListener('pagehide', finishAll);
-  addEventListener('pageshow', event => { if (event.persisted) finishAll(); });
+  // Back/forward restores a cached document on many desktop browsers. Re-arm
+  // the visible and upcoming entrances, keeping content above the viewport done.
+  addEventListener('pageshow', event => { if (event.persisted) syncMotion(); });
   addEventListener('resize', () => {
     if (resizeFrame) return;
     resizeFrame = requestAnimationFrame(() => {

@@ -1609,12 +1609,12 @@ a {
 }
 /* ---------- ACCESSIBILITY ---------- */
 @media (prefers-reduced-motion: reduce) {
-  html {
+  html:not([data-motion="enabled"]) {
     scroll-behavior: auto;
   }
-  *,
-  *::before,
-  *::after {
+  html:not([data-motion="enabled"]) *,
+  html:not([data-motion="enabled"]) *::before,
+  html:not([data-motion="enabled"]) *::after {
     animation-duration:
       0.01ms !important;
     animation-iteration-count:
@@ -1624,7 +1624,7 @@ a {
     scroll-behavior:
       auto !important;
   }
-  .reveal {
+  html:not([data-motion="enabled"]) .reveal {
     opacity: 1;
     transform: none;
   }
@@ -3147,8 +3147,8 @@ main:focus { outline: none; }
   .image-dialog-viewport { padding: 10px; }
 }
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
-  .product-device { transform: none; }
+  html:not([data-motion="enabled"]) *, html:not([data-motion="enabled"]) *::before, html:not([data-motion="enabled"]) *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+  html:not([data-motion="enabled"]) .product-device { transform: none; }
 }
 /* Grid items must be allowed to shrink on narrow devices. */
 .hero-copy, .hero-visual, .product-content, .product-art { min-width: 0; }

@@ -5,6 +5,10 @@ import translations from "./translations.js?v=09c089bf579e";
   "use strict";
   const root = document.documentElement;
   const page = document.body.dataset.page || 'home';
+  const listenMedia = (query, listener) => {
+    if (query.addEventListener) query.addEventListener('change', listener);
+    else query.addListener?.(listener);
+  };
   let motion = null;
   let language = root.lang === 'it' ? 'it' : 'en';
   const normalize = value => value.replace(/\s+/g, ' ').trim();
@@ -130,7 +134,7 @@ import translations from "./translations.js?v=09c089bf579e";
   });
   document.addEventListener('keydown', event => { if (event.key === 'Escape') closeMenu(true); });
   const desktop = matchMedia(page === 'home' ? '(min-width: 860px)' : '(min-width: 1021px)');
-  desktop.addEventListener('change', () => { if (desktop.matches) closeMenu(); });
+  listenMedia(desktop, () => { if (desktop.matches) closeMenu(); });
 
   // Screen selection uses the original link targets as its source of truth.
   const gallery = document.querySelector('[data-gallery]');
@@ -167,7 +171,7 @@ import translations from "./translations.js?v=09c089bf579e";
     tablist.setAttribute('role', 'tablist');
     const smallGallery = matchMedia('(max-width: 700px)');
     const orient = () => tablist.setAttribute('aria-orientation', smallGallery.matches ? 'horizontal' : 'vertical');
-    orient(); smallGallery.addEventListener('change', orient);
+    orient(); listenMedia(smallGallery, orient);
     panel.setAttribute('role', 'tabpanel'); panel.tabIndex = 0;
     choices.forEach((choice, index) => {
       choice.setAttribute('role', 'tab'); choice.setAttribute('aria-controls', 'screen-panel');
@@ -244,7 +248,7 @@ import translations from "./translations.js?v=09c089bf579e";
   document.querySelectorAll('#current-year,#rq-year').forEach(element => { element.textContent = String(new Date().getFullYear()); });
   applyLanguage(language);
   // Animation loading must never block translation, navigation or app previews.
-  import('./motion.js?v=17e402e7164d').then(({createMotion}) => {
+  import('./motion.js?v=564de1070002').then(({createMotion}) => {
     motion = createMotion();
   }).catch(() => { /* Core content and interactions remain available. */ });
 })();
