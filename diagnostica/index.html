@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="referrer" content="same-origin">
+  <meta name="theme-color" content="#ffffff">
+  <title>Verifica animazioni | CircuitAhead</title>
+  <link rel="icon" href="/assets/favicon.png">
+  <script src="/js/diagnostics.js?v=4bc542460555" defer></script>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; background: #f5f8fd; color: #102039; font: 16px/1.6 system-ui, sans-serif; }
+    main { width: min(1280px, calc(100% - 32px)); margin: 24px auto 48px; }
+    .brand { display: inline-flex; align-items: center; gap: 16px; color: #0758e8; text-decoration: none; }
+    .brand img { width: 88px; height: 66px; object-fit: contain; }
+    h1 { margin: 24px 0 12px; font-size: clamp(1.8rem, 5vw, 2.8rem); line-height: 1.15; letter-spacing: -.04em; }
+    p { max-width: 800px; }
+    .panel { margin: 24px 0; padding: clamp(18px, 3vw, 30px); background: #fff; border: 1px solid #dce5f1; border-radius: 20px; }
+    #verdict { margin: 0 0 16px; font-weight: 650; }
+    pre { margin: 16px 0; padding: 16px; overflow-wrap: anywhere; white-space: pre-wrap; background: #f5f8fd; border-radius: 12px; font: .85rem/1.7 ui-monospace, monospace; }
+    .actions { display: flex; flex-wrap: wrap; gap: 12px; }
+    button { min-height: 46px; padding: 10px 18px; border: 1px solid #cbd9eb; border-radius: 12px; background: #fff; color: #102039; font: inherit; font-weight: 650; cursor: pointer; }
+    #copy { background: #0758e8; color: #fff; border-color: #0758e8; }
+    button:disabled { opacity: .55; cursor: wait; }
+    :focus-visible { outline: 3px solid #2586ff; outline-offset: 4px; }
+    iframe { display: block; width: 100%; height: 380px; border: 1px solid #dce5f1; border-radius: 16px; background: #fff; }
+    .note { color: #52647e; font-size: .9rem; }
+    #copy-status { min-height: 1.6em; margin-bottom: 0; }
+  </style>
+</head>
+<body>
+  <main>
+    <a class="brand" href="/"><img src="/assets/circuitahead-logo.webp" width="724" height="543" alt="CircuitAhead"><span>Torna al sito</span></a>
+    <h1>Verifica delle animazioni</h1>
+    <p>Questa pagina controlla come il browser avvia gli effetti sul sito. Attenda il risultato, poi usi “Copia risultato” per comunicarlo nella conversazione.</p>
+    <iframe id="preview" title="Home di CircuitAhead usata per la verifica delle animazioni"></iframe>
+    <section class="panel" aria-label="Risultato della verifica">
+      <p id="verdict" role="status">Verifica in corso…</p>
+      <div class="actions"><button id="copy" type="button" disabled>Copia risultato</button><button id="retry" type="button" disabled>Ripeti verifica</button></div>
+      <p id="copy-status" role="status"></p>
+      <pre id="report" tabindex="0">Caricamento del sito dall’indirizzo normale…</pre>
+      <noscript>JavaScript è disattivato o bloccato in questo browser. Anche le animazioni del sito richiedono JavaScript.</noscript>
+    </section>
+    <p class="note">L’anteprima carica la Home senza attivazioni forzate. Il controllo non cambia le impostazioni del browser e non invia automaticamente il risultato.</p>
+  </main>
+</body>
+</html>

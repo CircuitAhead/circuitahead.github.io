@@ -17,4 +17,5 @@ jobs:
           node --check js/language.js
           node --check js/main.js
           node --check js/motion.js
+          node --check js/diagnostics.js
           node --check js/translations.js
