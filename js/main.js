@@ -5,6 +5,7 @@ import translations from "./translations.js?v=09c089bf579e";
   "use strict";
   const root = document.documentElement;
   const page = document.body.dataset.page || 'home';
+  let motion = null;
   let language = root.lang === 'it' ? 'it' : 'en';
   const normalize = value => value.replace(/\s+/g, ' ').trim();
   const pairs = [...translations.commonPairs, ...(translations.pagePairs[page] || [])];
@@ -76,6 +77,7 @@ import translations from "./translations.js?v=09c089bf579e";
     updateMenuLabel();
     updateGalleryText();
     updateDialogText();
+    motion?.refreshLanguage();
   }
 
   // Keep a single, consistent language control in the header on every screen size.
@@ -153,6 +155,7 @@ import translations from "./translations.js?v=09c089bf579e";
     panel.setAttribute('aria-labelledby', choice.id);
     const image = document.getElementById('screen-image');
     image.src = choice.href;
+    motion?.transitionImage(image);
     const preview = panel.querySelector('[data-preview]');
     preview.href = choice.href; preview.dataset.preview = choice.dataset.shot;
     document.getElementById('screen-count').textContent = `${String(selected + 1).padStart(2, '0')} / 06`;
@@ -202,6 +205,7 @@ import translations from "./translations.js?v=09c089bf579e";
     dialogIndex = (index + screenshots.length) % screenshots.length;
     const src = `/assets/remoriq-${screenshots[dialogIndex][0]}.jpg`;
     dialogImage.src = src; originalLink.href = src;
+    motion?.transitionImage(dialogImage);
     dialog.classList.remove('is-zoomed'); zoomButton.setAttribute('aria-pressed', 'false');
     updateDialogText();
   }
@@ -239,4 +243,8 @@ import translations from "./translations.js?v=09c089bf579e";
   }
   document.querySelectorAll('#current-year,#rq-year').forEach(element => { element.textContent = String(new Date().getFullYear()); });
   applyLanguage(language);
+  // Animation loading must never block translation, navigation or app previews.
+  import('./motion.js?v=17e402e7164d').then(({createMotion}) => {
+    motion = createMotion();
+  }).catch(() => { /* Core content and interactions remain available. */ });
 })();

@@ -23,9 +23,14 @@ Before publishing:
 python3 scripts/check-site.py
 node --check js/language.js
 node --check js/main.js
+node --check js/motion.js
 node --check js/translations.js
 ```
 
 GitHub Actions repeats these checks on pushes and pull requests. Also verify desktop and narrow layouts, both languages, menu keyboard behavior, gallery selection and the image dialog after interface changes.
 
 The HTML includes canonical links, Open Graph metadata and factual structured data. Update `sitemap.xml` when adding a page. The product remains marked in development; add a store link only after release.
+
+## Motion
+
+`js/motion.js` loads independently after core interactions. `css/motion.css` supplies the presentation. IntersectionObserver triggers entrances once; short title writing effects clip the original text using measured grapheme boxes, preserving layout, gradients and screen-reader content. Language changes and resizing cancel stale measurements. Native reduced-motion preferences disable animation; `?motion=off` provides an explicit opt-out for a visit. Keyboard focus reveals pending content immediately. No third-party animation library is loaded.

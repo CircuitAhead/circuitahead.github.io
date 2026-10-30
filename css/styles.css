@@ -1336,32 +1336,7 @@ a {
   color: var(--text-light);
   font-size: 0.77rem;
 }
-/* ---------- SCROLL REVEAL ---------- */
-.reveal {
-  opacity: 1;
-  transform:
-    translateY(0);
-  transition:
-    opacity 800ms var(--ease),
-    transform 800ms var(--ease);
-}
-.reveal.visible {
-  opacity: 1;
-  transform:
-    translateY(0);
-}
-.reveal-delay-1 {
-  transition-delay: 90ms;
-}
-.reveal-delay-2 {
-  transition-delay: 170ms;
-}
-.reveal-delay-3 {
-  transition-delay: 250ms;
-}
-.reveal-delay-4 {
-  transition-delay: 330ms;
-}
+/* Entrance effects are progressively managed by motion.js. */
 /* ---------- ANIMATIONS ---------- */
 @keyframes floatLogo {
   0%,
