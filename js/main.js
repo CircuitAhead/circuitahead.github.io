@@ -1,4 +1,4 @@
-import translations from "./translations.js?v=09c089bf579e";
+import translations from "./translations.js?v=32ba0df329c0";
 
 /* Shared language, navigation and screenshot behavior. No third-party runtime. */
 (() => {
@@ -78,6 +78,13 @@ import translations from "./translations.js?v=09c089bf579e";
         if (current === it || current === en) { url.searchParams.set('subject', text(en, it)); link.href = url.href; break; }
       }
     });
+    document.querySelectorAll('[data-subject-en][data-subject-it]').forEach(link => {
+      const url = new URL(link.href);
+      url.searchParams.set('subject', link.dataset[lang === 'it' ? 'subjectIt' : 'subjectEn']);
+      url.search = '?' + url.searchParams.toString().replace(/\+/g, '%20');
+      link.href = url.href;
+    });
+    document.querySelectorAll('[data-contact-status]').forEach(status => { status.textContent = ''; });
     updateMenuLabel();
     updateGalleryText();
     updateDialogText();
@@ -135,6 +142,66 @@ import translations from "./translations.js?v=09c089bf579e";
   document.addEventListener('keydown', event => { if (event.key === 'Escape') closeMenu(true); });
   const desktop = matchMedia(page === 'home' ? '(min-width: 860px)' : '(min-width: 1021px)');
   listenMedia(desktop, () => { if (desktop.matches) closeMenu(); });
+
+  // A progressive, illustrative walkthrough. The original anchors and all
+  // three steps remain usable when JavaScript is unavailable.
+  const workflow = document.querySelector('[data-workflow]');
+  if (workflow) {
+    const steps = [...workflow.querySelectorAll('[data-workflow-step]')];
+    const panels = steps.map(step => document.getElementById(step.hash.slice(1)));
+    const nav = workflow.querySelector('[data-workflow-nav]');
+    nav.setAttribute('role', 'tablist');
+    const horizontalSteps = matchMedia('(max-width: 920px)');
+    const orientSteps = () => nav.setAttribute('aria-orientation', horizontalSteps.matches ? 'horizontal' : 'vertical');
+    orientSteps(); listenMedia(horizontalSteps, orientSteps);
+    [...nav.children].forEach(item => item.setAttribute('role', 'presentation'));
+    workflow.dataset.enhanced = 'true';
+    function selectStep(index, focus = false) {
+      const selected = (index + steps.length) % steps.length;
+      steps.forEach((step, i) => {
+        step.setAttribute('role', 'tab');
+        step.setAttribute('aria-selected', String(i === selected));
+        step.setAttribute('aria-controls', panels[i].id);
+        step.tabIndex = i === selected ? 0 : -1;
+        panels[i].hidden = i !== selected;
+        panels[i].setAttribute('role', 'tabpanel');
+        panels[i].setAttribute('aria-labelledby', step.id);
+        panels[i].tabIndex = 0;
+      });
+      if (focus) steps[selected].focus({preventScroll: true});
+    }
+    steps.forEach((step, index) => {
+      step.addEventListener('click', event => { event.preventDefault(); selectStep(index); });
+      step.addEventListener('keydown', event => {
+        const target = {'ArrowRight': index + 1, 'ArrowDown': index + 1, 'ArrowLeft': index - 1, 'ArrowUp': index - 1, 'Home': 0, 'End': steps.length - 1, ' ': index}[event.key];
+        if (target !== undefined) { event.preventDefault(); selectStep(target, true); }
+      });
+    });
+    const selectHash = () => {
+      const index = steps.findIndex(step => step.hash === location.hash);
+      if (index >= 0) selectStep(index);
+    };
+    selectStep(Math.max(0, steps.findIndex(step => step.hash === location.hash)));
+    addEventListener('hashchange', selectHash);
+  }
+
+  document.querySelectorAll('[data-copy-email]').forEach(button => {
+    button.hidden = false;
+    button.addEventListener('click', async () => {
+    const contact = button.closest('.launch-contact');
+    const status = contact.querySelector('[data-contact-status]');
+    try {
+      await navigator.clipboard.writeText(button.dataset.copyEmail);
+      status.textContent = text('Email address copied.', 'Indirizzo email copiato.');
+    } catch {
+      const range = document.createRange();
+      range.selectNodeContents(contact.querySelector('[data-email-address]'));
+      const selection = getSelection();
+      selection.removeAllRanges(); selection.addRange(range);
+      status.textContent = text('The address is selected. Use your browser’s Copy command.', 'L’indirizzo è selezionato. Usa il comando Copia del browser.');
+    }
+    });
+  });
 
   // Screen selection uses the original link targets as its source of truth.
   const gallery = document.querySelector('[data-gallery]');

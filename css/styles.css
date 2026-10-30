@@ -3089,6 +3089,24 @@ a {
 }
 
 /* Shared behavior and accessibility */
+.prelaunch-note { max-width: 640px; margin-top: 24px; padding: 18px 20px; border: 1px solid #d7e6f9; border-radius: 16px; background: #f4f9ff; color: #345375; font-size: .9rem; line-height: 1.65; }
+.prelaunch-note strong { color: #071a43; }
+.prelaunch-note p { margin: 6px 0 10px; }
+.prelaunch-note a { display: inline-block; color: #0758e8; font-weight: 700; text-decoration: underline; text-underline-offset: 4px; }
+.policy-release-note { padding: 14px 16px; border-left: 2px solid #2586ff; background: #f4f9ff; color: #345375; font-size: .9rem; }
+/* Service pages put the useful information ahead of decorative space. */
+.support-hero-grid, .privacy-hero-inner { min-height: 0; gap: 44px; padding-block: 52px 60px; }
+.support-hero h1, .privacy-hero h1 { font-size: clamp(3rem, 5.5vw, 4.8rem); line-height: 1; }
+.support-hero-visual, .privacy-hero-visual { min-height: 360px; }
+.support-hero-actions { margin-top: 24px; }
+.support-address, .privacy-update { margin-top: 24px; }
+@media (max-width: 700px) {
+  .support-hero-grid, .privacy-hero-inner { padding-block: 38px 44px; }
+  .support-hero h1, .privacy-hero h1 { font-size: clamp(2.8rem, 12vw, 4rem); line-height: 1.04; }
+  .support-hero-visual, .privacy-hero-visual { display: none; }
+  .support-badge, .privacy-badge { margin-bottom: 20px; }
+  .support-hero-lead, .privacy-hero-lead { margin-top: 22px; font-size: 1rem; }
+}
 :root { color-scheme: light; }
 html { scrollbar-gutter: stable; }
 [hidden] { display: none !important; }

@@ -1,0 +1,103 @@
+/* Product narrative: useful context, a guided example and a direct launch contact. */
+.rq-page .rq-hero { padding-block: 48px 56px; }
+.rq-hero-grid > div { min-width: 0; }
+.rq-hero .rq-device { width: min(292px, 78vw); }
+.rq-availability { margin: 22px 0 0; color: #52647e; font-size: .85rem; }
+.rq-text-link { display: inline-block; margin-top: 14px; padding-block: 4px; color: #0758e8; font-size: .92rem; font-weight: 700; text-decoration: underline; text-underline-offset: 5px; }
+.rq-section { padding-block: clamp(56px, 6vw, 80px); }
+.rq-heading { max-width: 860px; font-size: clamp(2.1rem, 4vw, 3.5rem); line-height: 1.08; }
+.rq-feature { padding: 25px; box-shadow: 0 10px 28px #102f5c06; }
+.rq-features { margin-top: 32px; }
+
+.workflow-layout { display: grid; grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr); gap: clamp(24px, 5vw, 64px); align-items: start; margin-top: 36px; }
+.workflow-steps { display: grid; gap: 12px; margin: 0; padding: 0; list-style: none; }
+.workflow-step { display: flex; align-items: center; gap: 18px; padding: 21px; border: 1px solid #dce5f1; border-radius: 18px; background: #fff; color: #102039; text-decoration: none; transition: background 180ms ease, border-color 180ms ease; }
+.workflow-step:hover { border-color: #a9caff; background: #f7faff; }
+.workflow-step[aria-selected="true"] { border-color: #0758e8; background: #edf5ff; }
+.workflow-step-number { flex: 0 0 auto; color: #0758e8; font-size: .75rem; font-weight: 800; letter-spacing: .07em; }
+.workflow-step strong { display: block; margin-bottom: 3px; font-size: 1.05rem; }
+.workflow-step-description { display: block; color: #52647e; font-size: .85rem; line-height: 1.5; }
+.workflow-step-arrow { margin-left: auto; color: #0758e8; }
+.workflow-disclaimer { margin: 20px 4px 0; color: #52647e; font-size: .83rem; line-height: 1.65; }
+.workflow-display { min-width: 0; min-height: 480px; padding: 28px; border: 1px solid #dce5f1; border-radius: 24px; background: linear-gradient(145deg, #f5f9ff, #eef5ff); }
+.workflow-example-label { margin: 0 0 24px; color: #52647e; font-size: .65rem; font-weight: 750; letter-spacing: .09em; }
+.workflow-panel { scroll-margin-top: 110px; }
+.workflow-panel + .workflow-panel { margin-top: 34px; padding-top: 28px; border-top: 1px solid #cddbef; }
+[data-enhanced="true"] .workflow-panel { margin: 0; padding: 0; border: 0; }
+.workflow-panel-kicker { margin: 0 0 10px; color: #0758e8; font-size: .68rem; font-weight: 800; letter-spacing: .12em; }
+.workflow-panel h3 { margin: 0; color: #071a43; font-size: clamp(1.4rem, 2.4vw, 1.9rem); line-height: 1.2; letter-spacing: -.035em; }
+.workflow-panel > p:not([class]) { margin: 16px 0 24px; color: #52647e; font-size: .95rem; line-height: 1.7; }
+.example-receipt { width: min(330px, 100%); margin: 24px auto 0; padding: 24px; border: 1px solid #dce5f1; border-radius: 6px; background: #fff; color: #243950; font: .85rem/1.6 ui-monospace, monospace; box-shadow: 0 12px 28px #1737630b; }
+.receipt-shop { margin: 0; font-weight: 800; text-align: center; letter-spacing: .04em; }
+.receipt-date { margin: 6px 0 22px; color: #52647e; font-size: .68rem; text-align: center; }
+.receipt-line, .receipt-total { display: flex; justify-content: space-between; gap: 18px; }
+.receipt-line { margin-block: 8px; }
+.receipt-line > :last-child, .receipt-total > :last-child { flex-shrink: 0; }
+.receipt-total { margin-top: 20px; padding-top: 14px; border-top: 1px dashed #a5b8d0; font-size: 1rem; }
+.example-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; margin: 24px 0; border: 1px solid #dce5f1; border-radius: 14px; overflow: hidden; background: #dce5f1; }
+.example-fields > div { min-width: 0; padding: 18px; background: #fff; }
+.example-fields dt { margin-bottom: 5px; color: #52647e; font-size: .75rem; }
+.example-fields dd { margin: 0; color: #102039; font-size: .95rem; font-weight: 700; overflow-wrap: anywhere; }
+.workflow-hint { margin: 20px 0 0; color: #52647e; font-size: .83rem; line-height: 1.65; }
+.example-result { display: flex; align-items: center; gap: 16px; margin-top: 28px; padding: 22px; border: 1px solid #b7d9ce; border-radius: 16px; background: #fff; }
+.example-check { display: grid; place-items: center; flex-shrink: 0; width: 38px; height: 38px; border-radius: 50%; background: #e9f7ef; color: #16734b; font-size: 1.2rem; }
+.example-result strong { display: block; font-size: 1rem; }
+.example-result p { margin: 5px 0 0; color: #52647e; font-size: .83rem; }
+.example-destinations { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+.example-destinations span { padding: 7px 11px; border: 1px solid #ccdcef; border-radius: 8px; background: #fff; color: #345375; font-size: .75rem; }
+
+.rq-faq-layout { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); gap: clamp(28px, 5vw, 64px); align-items: start; }
+.rq-faq .rq-heading { font-size: clamp(2rem, 3.5vw, 3rem); }
+.rq-faq-list { display: grid; gap: 12px; min-width: 0; }
+.rq-faq .support-faq-item { border: 1px solid #dce5f1; border-radius: 16px; background: #fff; }
+.rq-faq .support-faq-item summary { gap: 18px; padding: 21px 22px; font-size: .98rem; line-height: 1.5; }
+.rq-faq .support-faq-answer { padding: 0 22px 22px; }
+.rq-faq .support-faq-answer p { margin: 0; color: #52647e; font-size: .93rem; line-height: 1.75; }
+
+.launch-panel { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, .95fr); gap: 40px; align-items: center; padding: clamp(24px, 4vw, 44px); border: 1px solid #d7e6f9; border-radius: 28px; background: linear-gradient(130deg, #edf5ff, #f9fcff); }
+.launch-panel .rq-heading { font-size: clamp(2rem, 3.2vw, 3rem); }
+.launch-panel .rq-sub { font-size: .98rem; }
+.launch-contact { min-width: 0; padding: 26px; border: 1px solid #dce5f1; border-radius: 20px; background: #fff; }
+.launch-contact-label { margin: 0 0 14px; color: #52647e; font-size: .68rem; font-weight: 750; letter-spacing: .12em; }
+.launch-contact-email { color: #071a43; font-size: clamp(.95rem, 1.8vw, 1.2rem); font-weight: 700; text-decoration: underline; text-underline-offset: 5px; overflow-wrap: anywhere; }
+.launch-contact .rq-actions { gap: 10px; margin-top: 22px; }
+.launch-contact .rq-button { width: 100%; padding-inline: 14px; font-size: .85rem; text-align: center; }
+.launch-contact-note { margin: 16px 0 0; color: #52647e; font-size: .8rem; line-height: 1.6; }
+.launch-contact-status { min-height: 1.5em; margin: 10px 0 0; color: #0758e8; font-size: .8rem; }
+html[data-motion="enabled"] [data-enhanced="true"] .workflow-panel:not([hidden]) { animation: story-panel 180ms ease-out both; }
+@keyframes story-panel { from { opacity: .35; } to { opacity: 1; } }
+
+@media (max-width: 920px) {
+  .workflow-layout, .rq-faq-layout, .launch-panel { grid-template-columns: minmax(0, 1fr); }
+  .workflow-steps { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .workflow-step { height: 100%; align-items: flex-start; flex-wrap: wrap; gap: 10px; padding: 16px; }
+  .workflow-step > span:nth-child(2) { flex-basis: 100%; }
+  .workflow-step-arrow { display: none; }
+  .workflow-display { min-height: 430px; }
+  .launch-panel { gap: 28px; }
+  .launch-contact .rq-actions { display: grid; grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 700px) {
+  .rq-page .rq-hero { padding-block: 36px 44px; }
+  .rq-hero-grid { gap: 32px; }
+  .rq-hero .rq-device { width: min(270px, 76vw); }
+  .rq-text-link { font-size: .85rem; }
+  .workflow-layout { gap: 24px; margin-top: 28px; }
+  .workflow-step { gap: 8px; padding: 12px 10px; border-radius: 12px; }
+  .workflow-step strong { margin: 0; font-size: .85rem; }
+  .workflow-step-description { display: none; }
+  .workflow-disclaimer { margin-top: 14px; font-size: .77rem; }
+  .workflow-display { min-height: 510px; padding: 20px; border-radius: 18px; }
+  .workflow-example-label { margin-bottom: 20px; font-size: .6rem; }
+  .workflow-panel h3 { font-size: 1.45rem; }
+  .workflow-panel > p:not([class]) { font-size: .9rem; }
+  .example-receipt { padding: 20px 16px; font-size: .75rem; }
+  .example-fields > div { padding: 14px 12px; }
+  .example-result { padding: 18px 14px; gap: 12px; }
+  .rq-faq .support-faq-item summary { padding: 18px; font-size: .92rem; }
+  .rq-faq .support-faq-answer { padding: 0 18px 18px; }
+  .launch-panel { padding: 24px 18px; border-radius: 20px; }
+  .launch-contact { padding: 22px 18px; }
+  .launch-contact-email { font-size: clamp(.84rem, 4.2vw, 1.1rem); letter-spacing: -.015em; }
+  .launch-contact .rq-actions { display: flex; }
+}

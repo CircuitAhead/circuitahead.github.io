@@ -1178,29 +1178,29 @@ export default {
     "home": {
       "en": {
         "title": "CircuitAhead — Software for a smarter tomorrow",
-        "description": "CircuitAhead creates thoughtful, reliable and privacy-focused software designed around real people and real needs.",
+        "description": "Independent software by Rudi Gaspari. Discover REMORIQ, a private memory for receipts, documents and reminders, in development for Android.",
         "ogTitle": "CircuitAhead",
-        "ogDescription": "Thoughtful software for a smarter tomorrow."
+        "ogDescription": "Independent software by Rudi Gaspari. Discover REMORIQ, a private memory for receipts, documents and reminders, in development for Android."
       },
       "it": {
         "title": "CircuitAhead — Software per un domani più intelligente",
-        "description": "CircuitAhead crea software curato, affidabile e attento alla privacy, progettato attorno a persone ed esigenze reali.",
+        "description": "Software indipendente di Rudi Gaspari. Scopri REMORIQ, una memoria privata per ricevute, documenti e promemoria, in sviluppo per Android.",
         "ogTitle": "CircuitAhead",
-        "ogDescription": "Software curato per un domani più intelligente."
+        "ogDescription": "Software indipendente di Rudi Gaspari. Scopri REMORIQ, una memoria privata per ricevute, documenti e promemoria, in sviluppo per Android."
       }
     },
     "remoriq": {
       "en": {
         "title": "REMORIQ — Your private second memory | CircuitAhead",
-        "description": "REMORIQ is a private, local-first second memory for Android. Capture useful information, organize it, act on it and keep control of your data.",
+        "description": "Discover how REMORIQ collects, reviews and organizes receipts, documents and reminders. Explore real development screens and Android release information.",
         "ogTitle": "REMORIQ — Your private second memory",
-        "ogDescription": "A local-first second memory designed to help you keep, understand and rediscover what matters."
+        "ogDescription": "Discover how REMORIQ collects, reviews and organizes receipts, documents and reminders. Explore real development screens and Android release information."
       },
       "it": {
         "title": "REMORIQ — La tua seconda memoria privata | CircuitAhead",
-        "description": "REMORIQ è una seconda memoria privata e local-first per Android. Raccogli informazioni utili, organizzale, agisci e mantieni il controllo dei tuoi dati.",
+        "description": "Scopri come REMORIQ raccoglie, verifica e organizza ricevute, documenti e promemoria. Schermate reali di sviluppo e informazioni sul rilascio per Android.",
         "ogTitle": "REMORIQ — La tua seconda memoria privata",
-        "ogDescription": "Una seconda memoria local-first progettata per aiutarti a conservare, capire e ritrovare ciò che conta."
+        "ogDescription": "Scopri come REMORIQ raccoglie, verifica e organizza ricevute, documenti e promemoria. Schermate reali di sviluppo e informazioni sul rilascio per Android."
       }
     },
     "privacy": {
@@ -1216,11 +1216,11 @@ export default {
     "support": {
       "en": {
         "title": "REMORIQ Support | CircuitAhead",
-        "description": "Official support for REMORIQ. Assistance, frequently asked questions, backup, privacy, purchases and CircuitAhead contacts."
+        "description": "Support for REMORIQ during development: frequently asked questions, backup, offline use, privacy, availability and CircuitAhead contacts."
       },
       "it": {
         "title": "Supporto REMORIQ | CircuitAhead",
-        "description": "Supporto ufficiale per REMORIQ. Assistenza, domande frequenti, backup, privacy, acquisti e contatti CircuitAhead."
+        "description": "Supporto a REMORIQ durante lo sviluppo: domande frequenti, backup, uso offline, privacy, disponibilità e contatti CircuitAhead."
       }
     }
   }

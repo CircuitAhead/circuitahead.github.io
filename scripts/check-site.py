@@ -2,7 +2,8 @@
 from collections import Counter
 from html.parser import HTMLParser
 from pathlib import Path
-from urllib.parse import urlsplit, unquote
+from urllib.parse import urlsplit, unquote, parse_qs
+import hashlib
 import json
 import re
 import sys
@@ -66,6 +67,10 @@ for path, page in pages.items():
             if target.is_dir():
                 target = target / 'index.html'
             require(target.is_file(), f'{label}: missing {value}')
+            if target.is_file() and target.suffix in ('.css', '.js'):
+                expected_version = hashlib.sha256(target.read_bytes()).hexdigest()[:12]
+                version = parse_qs(url.query).get('v', [''])[0]
+                require(version == expected_version, f'{label}: stale asset version for {url.path}')
             if url.fragment and target.suffix == '.html' and target in pages:
                 require(any(attrs.get('id') == unquote(url.fragment) for _, attrs in pages[target].tags), f'{label}: broken fragment {value}')
     require(not re.search(r'\.b64|onmouseenter|onmouseleave', path.read_text()), f'{label}: obsolete image plumbing')
@@ -81,4 +86,4 @@ require('circuitahead.com/sitemap.xml' in (ROOT/'robots.txt').read_text(), 'Miss
 if errors:
     print('\n'.join(errors), file=sys.stderr)
     raise SystemExit(1)
-print(f'PASS: {len(pages)} pages; local links and fragments, image dimensions, all 6 screenshots, metadata, structured data and domain.')
+print(f'PASS: {len(pages)} pages; local links and fragments, asset versions, image dimensions, all 6 screenshots, metadata, structured data and domain.')
