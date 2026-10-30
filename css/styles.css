@@ -3139,7 +3139,7 @@ main:focus { outline: none; }
 .image-dialog-close { font-size: 1.5rem !important; }
 .image-dialog-viewport { overflow: auto; padding: 20px; overscroll-behavior: contain; }
 .image-dialog-viewport img { width: auto; height: 100%; max-width: 100%; max-height: 100%; margin-inline: auto; object-fit: contain; border-radius: 8px; }
-.image-dialog.is-zoomed .image-dialog-viewport img { width: 698px; height: auto; max-width: none; max-height: none; }
+.image-dialog.is-zoomed .image-dialog-viewport img { width: var(--image-width); height: auto; max-width: none; max-height: none; }
 @media (min-width: 1021px) { .mobile-nav { display: none; } }
 @media (max-width: 1020px) {
   .header-inner { gap: 12px; }

@@ -1,25 +1,68 @@
 # CircuitAhead
 
-Official static website at https://circuitahead.com, hosted by GitHub Pages from `main` and the repository root. `CNAME` retains the custom domain. No build step, framework, third-party scripts or remote fonts are required.
+Independent apps and games at https://circuitahead.com. GitHub Pages serves the committed static HTML from `main` and the repository root; `CNAME` retains the domain. No framework, third-party runtime, remote fonts or backend is required.
 
-## Pages
+## Product architecture
 
-- `/`: CircuitAhead and the REMORIQ product preview.
-- `/remoriq/`: product features, six real app captures, accessible screen selector and native image dialog.
-- `/support/`: support contacts and FAQ.
-- `/privacy/`: REMORIQ privacy information.
+CircuitAhead is the shared brand. Every product has its own landing page, copy, visual identity, platforms, status, artwork, support and privacy information.
 
-## Maintain
+| URL | Role |
+| --- | --- |
+| `/` | Brand introduction, featured product and additional products |
+| `/products/` | Catalog of real apps and games |
+| `/help/` | Choose a product for its support and FAQ |
+| `/legal/` | Choose a product for its privacy information |
+| `/remoriq/` | REMORIQ-specific landing page and real app gallery |
+| `/support/` | Existing REMORIQ support URL, retained for compatibility |
+| `/privacy/` | Existing REMORIQ privacy policy URL, retained for compatibility |
 
-Keep screenshots in `assets/remoriq-*.jpg`. They are the original 698 × 1536 captures without recompression. The native dialog offers fit, original size, previous/next, Escape and a direct image link. The screen links work without JavaScript.
-
-`js/language.js` chooses IT/EN using a manual selection, browser language or the Europe/Rome timezone. `js/main.js` applies shared navigation and gallery behavior; `js/translations.js` keeps the bilingual copy separate from interaction code. Storage exceptions do not block the page. `?lang=it` and `?lang=en` allow explicit previews. App screenshots remain in their original Italian language.
-
-The shared stylesheet contains the home, support and privacy layouts. Product styles are isolated in `css/remoriq.css`. The home composition is in `css/home.css`: content determines section heights, and its side-by-side desktop layout starts at 860px.
-
-Before publishing:
+The source of truth for shared product listings is `data/products.json`. The Python standard-library generator updates the Home product area, the three shared directories and the sitemap:
 
 ```sh
+python3 scripts/build-catalog.py
+```
+
+Generated pages are committed and work without JavaScript. There is no browser-side catalog fetch. Filters appear when the catalog actually contains more than one kind of product. There are no fictitious or placeholder products in the public catalog.
+
+## Add a real product
+
+1. Create its own directory and landing page, for example `/new-product/index.html`. `templates/product-page.html.template` is a product-neutral starting point; replace every token with verified information. App and game pages can use different compositions, images and their own stylesheet.
+2. Prepare accurate support and privacy pages for that product, normally `/new-product/support/` and `/new-product/privacy/`. REMORIQ's existing shorter URLs remain valid. Policies must reflect the new product's actual behavior.
+3. Add a record to `data/products.json`: unique `id`, `name`, `kind` (`app` or `game`), `status` (`development`, `beta` or `available`), `platforms`, `url`, `support_url`, `privacy_url`, bilingual `summary`, and an `icon` with real file path and dimensions. `description`, `category`, `highlights`, `preview` and `featured` are optional. Preview shape can be `portrait` or `landscape`. At most one product is featured.
+4. Run the generator and the checks below. The new product is then included automatically in the catalog, Home, support directory, privacy directory and sitemap. Do not add store links, release claims or prices before they are verified.
+
+The Home's featured slot is selected by `featured: true`; if absent it uses the first product. Other products appear in the additional-products grid. Product-specific design and content remain in the product's own page, rather than becoming conditional code in the Home or shared JavaScript.
+
+## Shared components
+
+`js/language.js` chooses Italian or English from a manual preference, browser language or the Europe/Rome timezone. Common navigation, progressive galleries, optional filters, workflows and native image dialogs live in `js/main.js`. `js/translations.js` contains legacy page-specific copy. The legacy page IDs `remoriq`, `remoriq-support` and `remoriq-privacy` are reserved for those pages.
+
+For any new page, use its own `data-page` value and bilingual `data-en` / `data-it` fields. A bilingual `<title>` updates automatically; meta elements use `data-content-en` / `data-content-it`. Image alternatives use `data-alt-en` / `data-alt-it`. Email subjects use `data-subject-en` / `data-subject-it`. No product name needs to be added to shared JavaScript.
+
+### Galleries
+
+A gallery reads its images, labels and count from that page's HTML. It supports portrait, square and landscape media and different image formats. Supply:
+
+- `data-product-name` on the body.
+- One `[data-gallery]` container with `data-gallery-count` declaring the intended number of images.
+- A `.screen-choices` element containing `[data-shot]` anchors with unique IDs, real image `href`s, bilingual label spans, `data-title-en` / `data-title-it`, `data-description-en` / `data-description-it`, and image dimensions in `data-width` / `data-height` when they differ between images.
+- `#screen-panel`, `#screen-image` with width and height, `#screen-title`, `#screen-description`, and `#screen-count`.
+- A `[data-preview]` anchor inside the panel, whose key matches a `data-shot`. Hero previews can use the same keys.
+
+The native dialog supports original dimensions, previous/next, fit, Escape and opening the original file. Its paths and labels come from the product's anchors. Real REMORIQ screenshots remain in `assets/remoriq-*.jpg` as their original 698 × 1536 files.
+
+### Styling and motion
+
+`css/styles.css` supplies shared navigation and the legacy service-page layouts. `css/home.css` controls the Home; `css/catalog.css` supplies the shared directories and neutral product-page basics. REMORIQ keeps `css/remoriq.css` and `css/product-story.css`. A new product can add its own styles without changing REMORIQ.
+
+`js/motion.js` progressively adds entrances and title writing, preserving native text and layout. Reduced-motion preferences are respected. `?motion=on` and `?motion=off` save an explicit browser preference. Keyboard focus reveals pending content immediately. No animation control is added to the header.
+
+## Validate and publish
+
+```sh
+python3 scripts/build-catalog.py
+python3 scripts/build-catalog.py --check
+python3 scripts/test-catalog.py
 python3 scripts/check-site.py
 node --check js/language.js
 node --check js/main.js
@@ -27,10 +70,6 @@ node --check js/motion.js
 node --check js/translations.js
 ```
 
-GitHub Actions repeats these checks on pushes and pull requests. Also verify desktop and narrow layouts, both languages, menu keyboard behavior, gallery selection and the image dialog after interface changes.
+The generator also refreshes shared module and stylesheet fingerprints. The page audit discovers every public page from the sitemap and checks links, fragments, asset versions, metadata, bilingual fields and gallery declarations. GitHub Actions repeats these checks. The catalog regression scenarios cover adding a game alongside an app, product-specific support/privacy routes and a featured landscape game without publishing test products.
 
-The HTML includes canonical links, Open Graph metadata and factual structured data. Update `sitemap.xml` when adding a page. The product remains marked in development; add a store link only after release.
-
-## Motion
-
-`js/motion.js` loads independently after core interactions. `css/motion.css` supplies the presentation. IntersectionObserver triggers entrances once; short title writing effects clip the original text using measured grapheme boxes, preserving layout, gradients and screen-reader content. Language changes and resizing cancel stale measurements. Native reduced-motion preferences disable animation; `?motion=off` provides an explicit opt-out for a visit. Keyboard focus reveals pending content immediately. No third-party animation library is loaded.
+Before publishing interaction changes, check desktop and narrow widths, both languages, keyboard navigation, galleries and the image dialog. Commit the generated HTML together with registry and source changes; GitHub Pages serves those committed files directly.

@@ -293,7 +293,7 @@ export default {
         "Software per un domani più intelligente."
       ]
     ],
-    "privacy": [
+    "remoriq-privacy": [
       [
         "REMORIQ · Android",
         "REMORIQ · Android"
@@ -819,7 +819,7 @@ export default {
         "I servizi Google descritti in questa informativa possono essere utilizzati dalle versioni distribuite. Questa pagina e le dichiarazioni Google Play devono riflettere il comportamento effettivo della versione pubblicata. Ulteriori trattamenti saranno descritti prima della loro attivazione."
       ]
     ],
-    "support": [
+    "remoriq-support": [
       [
         "Official REMORIQ support",
         "Supporto ufficiale REMORIQ"
@@ -1178,15 +1178,15 @@ export default {
     "home": {
       "en": {
         "title": "CircuitAhead — Software for a smarter tomorrow",
-        "description": "Independent software by Rudi Gaspari. Discover REMORIQ, a private memory for receipts, documents and reminders, in development for Android.",
+        "description": "CircuitAhead is Rudi Gaspari’s independent software project. Explore its products and follow the development of new apps and games.",
         "ogTitle": "CircuitAhead",
-        "ogDescription": "Independent software by Rudi Gaspari. Discover REMORIQ, a private memory for receipts, documents and reminders, in development for Android."
+        "ogDescription": "CircuitAhead is Rudi Gaspari’s independent software project. Explore its products and follow the development of new apps and games."
       },
       "it": {
         "title": "CircuitAhead — Software per un domani più intelligente",
-        "description": "Software indipendente di Rudi Gaspari. Scopri REMORIQ, una memoria privata per ricevute, documenti e promemoria, in sviluppo per Android.",
+        "description": "CircuitAhead è il progetto software indipendente di Rudi Gaspari. Esplora i prodotti e segui lo sviluppo di nuove app e giochi.",
         "ogTitle": "CircuitAhead",
-        "ogDescription": "Software indipendente di Rudi Gaspari. Scopri REMORIQ, una memoria privata per ricevute, documenti e promemoria, in sviluppo per Android."
+        "ogDescription": "CircuitAhead è il progetto software indipendente di Rudi Gaspari. Esplora i prodotti e segui lo sviluppo di nuove app e giochi."
       }
     },
     "remoriq": {
@@ -1203,7 +1203,7 @@ export default {
         "ogDescription": "Scopri come REMORIQ raccoglie, verifica e organizza ricevute, documenti e promemoria. Schermate reali di sviluppo e informazioni sul rilascio per Android."
       }
     },
-    "privacy": {
+    "remoriq-privacy": {
       "en": {
         "title": "REMORIQ Privacy Policy | CircuitAhead",
         "description": "Privacy Policy for REMORIQ, the Android application developed and published by CircuitAhead."
@@ -1213,7 +1213,7 @@ export default {
         "description": "Informativa sulla privacy di REMORIQ, applicazione Android sviluppata e pubblicata da CircuitAhead."
       }
     },
-    "support": {
+    "remoriq-support": {
       "en": {
         "title": "REMORIQ Support | CircuitAhead",
         "description": "Support for REMORIQ during development: frequently asked questions, backup, offline use, privacy, availability and CircuitAhead contacts."

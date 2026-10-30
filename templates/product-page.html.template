@@ -1,0 +1,52 @@
+<!doctype html>
+<!-- Source template: replace every {{TOKEN}} with verified product information.
+     Give the product its own copy, artwork and optional page-specific stylesheet.
+     Do not copy another product's privacy policy or make unsupported claims. -->
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="/js/language.js"></script>
+  <title data-en="{{TITLE_EN}} | CircuitAhead" data-it="{{TITLE_IT}} | CircuitAhead">{{TITLE_EN}} | CircuitAhead</title>
+  <meta name="description" content="{{DESCRIPTION_EN}}" data-content-en="{{DESCRIPTION_EN}}" data-content-it="{{DESCRIPTION_IT}}">
+  <meta property="og:title" content="{{TITLE_EN}}" data-content-en="{{TITLE_EN}}" data-content-it="{{TITLE_IT}}">
+  <meta property="og:description" content="{{DESCRIPTION_EN}}" data-content-en="{{DESCRIPTION_EN}}" data-content-it="{{DESCRIPTION_IT}}">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="CircuitAhead">
+  <meta property="og:url" content="https://circuitahead.com/{{PRODUCT_ID}}/">
+  <meta property="og:image" content="https://circuitahead.com{{SOCIAL_IMAGE}}">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="canonical" href="https://circuitahead.com/{{PRODUCT_ID}}/">
+  <link rel="icon" href="/assets/favicon.png">
+  <link rel="stylesheet" href="/css/styles.css">
+  <link rel="stylesheet" href="/css/catalog.css">
+  <link rel="stylesheet" href="/css/motion.css">
+  <link rel="modulepreload" href="/js/motion.js">
+  <script type="module" src="/js/main.js"></script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"{{PRODUCT_NAME}}","url":"https://circuitahead.com/{{PRODUCT_ID}}/"}</script>
+</head>
+<body class="product-page" data-page="{{PRODUCT_ID}}" data-product-name="{{PRODUCT_NAME}}">
+  <a class="skip-link" href="#main-content" data-en="Skip to content" data-it="Vai al contenuto">Skip to content</a>
+  <header class="site-header" id="top"><div class="container header-inner">
+    <a class="brand" href="/" aria-label="CircuitAhead home"><img class="brand-logo" src="/assets/circuitahead-logo.webp" width="724" height="543" alt="CircuitAhead"></a>
+    <nav class="desktop-nav" aria-label="Main navigation"><a href="/products/" data-en="All products" data-it="Tutti i prodotti">All products</a><a href="{{SUPPORT_URL}}" data-en="Product support" data-it="Supporto del prodotto">Product support</a></nav>
+    <button class="menu-button" type="button" aria-label="Open navigation" aria-expanded="false" aria-controls="mobile-navigation"><span></span><span></span></button>
+  </div><nav class="mobile-nav" id="mobile-navigation" aria-label="Mobile navigation"><a href="/products/" data-en="All products" data-it="Tutti i prodotti">All products</a><a href="{{SUPPORT_URL}}" data-en="Product support" data-it="Supporto del prodotto">Product support</a></nav></header>
+  <main id="main-content" tabindex="-1">
+    <section class="container product-page-intro">
+      <div><p class="section-eyebrow reveal" data-en="{{STATUS_EN}}" data-it="{{STATUS_IT}}">{{STATUS_EN}}</p>
+        <h1 class="reveal">{{PRODUCT_NAME}}</h1>
+        <p class="reveal" data-en="{{DESCRIPTION_EN}}" data-it="{{DESCRIPTION_IT}}">{{DESCRIPTION_EN}}</p>
+        <div class="product-page-links reveal"><a class="button button-primary" href="#overview" data-en="Explore the project" data-it="Scopri il progetto">Explore the project</a></div>
+      </div>
+      <img class="reveal" src="{{HERO_IMAGE}}" width="{{HERO_WIDTH}}" height="{{HERO_HEIGHT}}" alt="{{HERO_ALT_EN}}" data-alt-en="{{HERO_ALT_EN}}" data-alt-it="{{HERO_ALT_IT}}">
+    </section>
+    <section class="container section" id="overview">
+      <h2 class="reveal" data-en="{{OVERVIEW_TITLE_EN}}" data-it="{{OVERVIEW_TITLE_IT}}">{{OVERVIEW_TITLE_EN}}</h2>
+      <p class="reveal" data-en="{{OVERVIEW_EN}}" data-it="{{OVERVIEW_IT}}">{{OVERVIEW_EN}}</p>
+      <!-- Add product-specific features, real screenshots or gameplay here.
+           A gallery can use the shared data-gallery component documented in README.md. -->
+    </section>
+  </main>
+  <footer class="catalog-footer"><div class="container"><p>© <span id="current-year">2026</span> CircuitAhead · {{PRODUCT_NAME}}</p><nav aria-label="Footer"><a href="/products/" data-en="All products" data-it="Tutti i prodotti">All products</a><a href="{{SUPPORT_URL}}" data-en="Product support" data-it="Supporto del prodotto">Product support</a><a href="{{PRIVACY_URL}}" data-en="Privacy policy" data-it="Informativa privacy">Privacy policy</a></nav></div></footer>
+</body></html>

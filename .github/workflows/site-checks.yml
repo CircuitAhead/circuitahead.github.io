@@ -10,7 +10,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Check static pages and assets
+      - name: Check generated catalog and directories
+        run: python3 scripts/build-catalog.py --check
+      - name: Check app and game catalog scenarios
+        run: python3 scripts/test-catalog.py
+      - name: Check every public page and asset
         run: python3 scripts/check-site.py
       - name: Check JavaScript syntax
         run: |

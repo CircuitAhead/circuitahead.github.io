@@ -1,0 +1,34 @@
+{
+  "products": [
+    {
+      "id": "remoriq",
+      "name": "REMORIQ",
+      "kind": "app",
+      "status": "development",
+      "platforms": ["Android"],
+      "url": "/remoriq/",
+      "support_url": "/support/",
+      "privacy_url": "/privacy/",
+      "featured": true,
+      "category": {"en": "Private digital memory", "it": "Memoria digitale privata"},
+      "summary": {
+        "en": "Receipts, documents and reminders. A private place to keep what matters.",
+        "it": "Ricevute, documenti e promemoria. Un posto privato per ciò che conta."
+      },
+      "description": {
+        "en": "Import or share useful content, review the information and keep it organized. REMORIQ is in development for Android, with core workflows designed to work offline.",
+        "it": "Importa o condividi un contenuto utile, controlla le informazioni e conservale in ordine. REMORIQ è in sviluppo per Android, con flussi principali progettati per funzionare offline."
+      },
+      "highlights": [
+        {"en": "Local-first", "it": "Local-first"},
+        {"en": "Privacy focused", "it": "Privacy al centro"},
+        {"en": "No account required", "it": "Nessun account richiesto"}
+      ],
+      "icon": {"src": "/assets/remoriq-icon.png", "width": 320, "height": 320},
+      "preview": {
+        "src": "/assets/remoriq-home.jpg", "width": 698, "height": 1536, "shape": "portrait",
+        "alt": {"en": "REMORIQ Home screen", "it": "Schermata Home di REMORIQ"}
+      }
+    }
+  ]
+}

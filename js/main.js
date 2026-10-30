@@ -1,4 +1,4 @@
-import translations from "./translations.js?v=32ba0df329c0";
+import translations from "./translations.js?v=7c9feab8c778";
 
 /* Shared language, navigation and screenshot behavior. No third-party runtime. */
 (() => {
@@ -52,6 +52,12 @@ import translations from "./translations.js?v=32ba0df329c0";
     records.forEach(record => { record.node.nodeValue = record.leading + record[lang] + record.trailing; });
     attributes.forEach(record => record.element.setAttribute(record.attr, record[lang]));
     textElements.forEach(element => { element.textContent = element.dataset[lang]; });
+    document.querySelectorAll('meta[data-content-en][data-content-it]').forEach(element => {
+      element.content = element.dataset[lang === 'it' ? 'contentIt' : 'contentEn'];
+    });
+    document.querySelectorAll('[data-alt-en][data-alt-it]').forEach(element => {
+      element.alt = element.dataset[lang === 'it' ? 'altIt' : 'altEn'];
+    });
     document.querySelectorAll('[data-aria-en]').forEach(element => element.setAttribute('aria-label', element.dataset[lang === 'it' ? 'ariaIt' : 'ariaEn']));
     document.querySelectorAll('[data-language]').forEach(button => {
       const active = button.dataset.language === lang;
@@ -65,19 +71,6 @@ import translations from "./translations.js?v=32ba0df329c0";
       setMeta('meta[property="og:title"]', meta.ogTitle || meta.title);
       setMeta('meta[property="og:description"]', meta.ogDescription || meta.description);
     }
-    const subjects = new Map([
-      ['Supporto REMORIQ', 'REMORIQ Support'],
-      ['REMORIQ - Acquisti', 'REMORIQ - Purchases'],
-      ['REMORIQ - Segnalazione problema', 'REMORIQ - Problem report']
-    ]);
-    document.querySelectorAll('a[href^="mailto:"]').forEach(link => {
-      const url = new URL(link.href);
-      const current = url.searchParams.get('subject');
-      if (!current) return;
-      for (const [it, en] of subjects) {
-        if (current === it || current === en) { url.searchParams.set('subject', text(en, it)); link.href = url.href; break; }
-      }
-    });
     document.querySelectorAll('[data-subject-en][data-subject-it]').forEach(link => {
       const url = new URL(link.href);
       url.searchParams.set('subject', link.dataset[lang === 'it' ? 'subjectIt' : 'subjectEn']);
@@ -88,6 +81,7 @@ import translations from "./translations.js?v=32ba0df329c0";
     updateMenuLabel();
     updateGalleryText();
     updateDialogText();
+    updateCatalog();
     motion?.refreshLanguage();
   }
 
@@ -203,9 +197,34 @@ import translations from "./translations.js?v=32ba0df329c0";
     });
   });
 
+  // A static catalog remains readable without scripting. Filters appear only
+  // when more than one product category is actually present.
+  const catalog = document.querySelector('[data-catalog]');
+  let catalogKind = 'all';
+  function updateCatalog() {
+    if (!catalog) return;
+    const cards = [...catalog.querySelectorAll('[data-catalog-product]')];
+    let count = 0;
+    cards.forEach(card => {
+      card.hidden = catalogKind !== 'all' && card.dataset.productKind !== catalogKind;
+      if (!card.hidden) count++;
+    });
+    catalog.querySelectorAll('[data-product-filter]').forEach(button => {
+      button.setAttribute('aria-pressed', String(button.dataset.productFilter === catalogKind));
+    });
+    const status = catalog.querySelector('[data-catalog-status]');
+    if (status) status.textContent = text(`${count} ${count === 1 ? 'product' : 'products'}`, `${count} ${count === 1 ? 'prodotto' : 'prodotti'}`);
+  }
+  catalog?.querySelectorAll('[data-product-filter]').forEach(button => {
+    button.hidden = false;
+    button.addEventListener('click', () => { catalogKind = button.dataset.productFilter; updateCatalog(); });
+  });
+
   // Screen selection uses the original link targets as its source of truth.
   const gallery = document.querySelector('[data-gallery]');
+  const productName = document.body.dataset.productName || 'CircuitAhead';
   const choices = gallery ? [...gallery.querySelectorAll('[data-shot]')] : [];
+  const shotLabel = choice => choice.querySelector('[data-en][data-it]')?.dataset[language] || choice.textContent.trim();
   const panel = document.getElementById('screen-panel');
   let selected = 0;
   function updateGalleryText() {
@@ -214,7 +233,7 @@ import translations from "./translations.js?v=32ba0df329c0";
     document.getElementById('screen-title').textContent = choice.dataset[language === 'it' ? 'titleIt' : 'titleEn'];
     document.getElementById('screen-description').textContent = choice.dataset[language === 'it' ? 'descriptionIt' : 'descriptionEn'];
     const image = document.getElementById('screen-image');
-    image.alt = 'REMORIQ — ' + choice.querySelector('[data-en]').dataset[language];
+    image.alt = productName + ' — ' + shotLabel(choice);
   }
   function selectScreen(index, moveFocus = false) {
     selected = (index + choices.length) % choices.length;
@@ -229,7 +248,7 @@ import translations from "./translations.js?v=32ba0df329c0";
     motion?.transitionImage(image);
     const preview = panel.querySelector('[data-preview]');
     preview.href = choice.href; preview.dataset.preview = choice.dataset.shot;
-    document.getElementById('screen-count').textContent = `${String(selected + 1).padStart(2, '0')} / 06`;
+    document.getElementById('screen-count').textContent = `${String(selected + 1).padStart(2, '0')} / ${String(choices.length).padStart(2, '0')}`;
     updateGalleryText();
     if (moveFocus) choice.focus({preventScroll: true});
   }
@@ -257,15 +276,15 @@ import translations from "./translations.js?v=32ba0df329c0";
   }
 
   // Native dialog provides modal semantics, focus containment, Escape and focus restoration.
-  const screenshots = [["home", "Home", "Home"], ["inbox", "Smart Inbox", "Inbox intelligente"], ["expenses", "Expenses", "Spese"], ["archive", "Archive", "Archivio"], ["profile", "Profile & settings", "Profilo e impostazioni"], ["add-content", "Add content", "Aggiungi contenuto"]];
+  const screenshots = choices;
   let dialog, dialogTitle, dialogImage, originalLink, closeButton, zoomButton, previousButton, nextButton;
   let dialogIndex = 0;
   function updateDialogText() {
     if (!dialog) return;
     const shot = screenshots[dialogIndex];
-    const title = shot[language === 'it' ? 2 : 1];
+    const title = shotLabel(shot);
     dialogTitle.textContent = `${title} · ${dialogIndex + 1} / ${screenshots.length}`;
-    dialogImage.alt = `REMORIQ — ${title}`;
+    dialogImage.alt = `${productName} — ${title}`;
     closeButton.setAttribute('aria-label', text('Close image', 'Chiudi immagine'));
     zoomButton.textContent = dialog.classList.contains('is-zoomed') ? text('Fit image', 'Adatta immagine') : text('Actual size', 'Dimensione originale');
     originalLink.textContent = text('Open original ↗', 'Apri originale ↗');
@@ -274,8 +293,12 @@ import translations from "./translations.js?v=32ba0df329c0";
   }
   function showShot(index) {
     dialogIndex = (index + screenshots.length) % screenshots.length;
-    const src = `/assets/remoriq-${screenshots[dialogIndex][0]}.jpg`;
-    dialogImage.src = src; originalLink.href = src;
+    const shot = screenshots[dialogIndex];
+    const sourceImage = document.getElementById('screen-image');
+    dialogImage.width = Number(shot.dataset.width) || Number(sourceImage.getAttribute('width'));
+    dialogImage.height = Number(shot.dataset.height) || Number(sourceImage.getAttribute('height'));
+    dialog.style.setProperty('--image-width', `${dialogImage.width}px`);
+    dialogImage.src = shot.href; originalLink.href = shot.href;
     motion?.transitionImage(dialogImage);
     dialog.classList.remove('is-zoomed'); zoomButton.setAttribute('aria-pressed', 'false');
     updateDialogText();
@@ -294,7 +317,10 @@ import translations from "./translations.js?v=32ba0df329c0";
     closeButton = button('×', () => dialog.close()); closeButton.className = 'image-dialog-close';
     toolbar.append(actions); dialog.append(toolbar);
     const viewport = document.createElement('div'); viewport.className = 'image-dialog-viewport';
-    dialogImage = document.createElement('img'); dialogImage.width = 698; dialogImage.height = 1536; viewport.append(dialogImage); dialog.append(viewport);
+    dialogImage = document.createElement('img'); viewport.append(dialogImage); dialog.append(viewport);
+    dialogImage.addEventListener('load', () => {
+      dialog.style.setProperty('--image-width', `${dialogImage.naturalWidth}px`);
+    });
     dialog.addEventListener('close', () => root.classList.remove('modal-open'));
     dialog.addEventListener('click', event => { if (event.target === dialog) dialog.close(); });
     dialog.addEventListener('keydown', event => {
@@ -303,11 +329,11 @@ import translations from "./translations.js?v=32ba0df329c0";
     });
     document.body.append(dialog);
   }
-  if (typeof HTMLDialogElement !== 'undefined') {
+  if (typeof HTMLDialogElement !== 'undefined' && screenshots.length) {
     document.querySelectorAll('[data-preview]').forEach(link => link.addEventListener('click', event => {
       event.preventDefault();
       if (!dialog) createDialog();
-      const index = screenshots.findIndex(shot => shot[0] === link.dataset.preview);
+      const index = screenshots.findIndex(shot => shot.dataset.shot === link.dataset.preview);
       showShot(index < 0 ? 0 : index);
       root.classList.add('modal-open'); dialog.showModal(); closeButton.focus();
     }));

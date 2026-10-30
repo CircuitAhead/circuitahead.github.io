@@ -7,9 +7,11 @@ import hashlib
 import json
 import re
 import sys
+import xml.etree.ElementTree as ET
 
 ROOT = Path(__file__).resolve().parents[1]
-PAGES = [ROOT / p for p in ('index.html', 'remoriq/index.html', 'support/index.html', 'privacy/index.html')]
+locations = ET.parse(ROOT / 'sitemap.xml').findall('.//{http://www.sitemaps.org/schemas/sitemap/0.9}loc')
+PAGES = [ROOT / urlsplit(item.text).path.lstrip('/') / 'index.html' for item in locations]
 
 class Page(HTMLParser):
     def __init__(self, source):
@@ -74,16 +76,32 @@ for path, page in pages.items():
             if url.fragment and target.suffix == '.html' and target in pages:
                 require(any(attrs.get('id') == unquote(url.fragment) for _, attrs in pages[target].tags), f'{label}: broken fragment {value}')
     require(not re.search(r'\.b64|onmouseenter|onmouseleave', path.read_text()), f'{label}: obsolete image plumbing')
-
-product = pages[ROOT / 'remoriq/index.html']
-shot_links = [(tag, attrs) for tag, attrs in product.tags if 'data-shot' in attrs]
-require(len(shot_links) == 6, 'Product gallery must contain all six screenshots')
-for _, attrs in shot_links:
-    asset = ROOT / attrs['href'].lstrip('/')
-    require(asset.read_bytes().startswith(b'\xff\xd8\xff'), f'{asset.name}: invalid JPEG')
+    galleries = [attrs for _, attrs in page.tags if 'data-gallery' in attrs]
+    if galleries:
+        shot_links = [attrs for _, attrs in page.tags if 'data-shot' in attrs]
+        expected = galleries[0].get('data-gallery-count', '')
+        require(expected.isdigit() and int(expected) == len(shot_links) and int(expected) > 0, f'{label}: gallery count does not match its declared screens')
+        keys = [attrs['data-shot'] for attrs in shot_links]
+        require(len(keys) == len(set(keys)), f'{label}: duplicate gallery keys')
+        for _, attrs in page.tags:
+            if 'data-preview' in attrs:
+                require(attrs['data-preview'] in keys, f'{label}: preview missing from gallery')
+    for _, attrs in page.tags:
+        if 'data-en' in attrs or 'data-it' in attrs:
+            require(bool(attrs.get('data-en')) and bool(attrs.get('data-it')), f'{label}: incomplete bilingual copy')
+    if 'body' in [tag for tag, _ in page.tags] and galleries:
+        require(any(tag == 'body' and attrs.get('data-product-name') for tag, attrs in page.tags), f'{label}: gallery missing product identity')
+for match in re.finditer(r"['\"](\./[a-z0-9.-]+\.js)\?v=([a-f0-9]+)['\"]", (ROOT/'js/main.js').read_text()):
+    target = ROOT/'js'/match[1][2:]
+    require(hashlib.sha256(target.read_bytes()).hexdigest()[:12] == match[2], f'js/main.js: stale module version for {match[1]}')
+for product in json.loads((ROOT/'data/products.json').read_text())['products']:
+    landing = ROOT/product['url'].lstrip('/')/'index.html'
+    require(landing in pages, f'{product["id"]}: product is missing from sitemap')
+    if landing in pages:
+        require(any(tag == 'body' and attrs.get('data-product-name') == product['name'] for tag, attrs in pages[landing].tags), f'{product["id"]}: product page identity does not match catalog')
 require((ROOT/'CNAME').read_text().strip() == 'circuitahead.com', 'Custom domain changed')
 require('circuitahead.com/sitemap.xml' in (ROOT/'robots.txt').read_text(), 'Missing sitemap discovery')
 if errors:
     print('\n'.join(errors), file=sys.stderr)
     raise SystemExit(1)
-print(f'PASS: {len(pages)} pages; local links and fragments, asset versions, image dimensions, all 6 screenshots, metadata, structured data and domain.')
+print(f'PASS: {len(pages)} public pages; links, fragments, asset versions, bilingual fields, product galleries, image dimensions, metadata and domain.')
