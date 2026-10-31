@@ -11,24 +11,28 @@
       "privacy_url": "/privacy/",
       "featured": true,
       "category": {"en": "Private digital memory", "it": "Memoria digitale privata"},
-      "summary": {
-        "en": "Receipts, documents and reminders. A private place to keep what matters.",
-        "it": "Ricevute, documenti e promemoria. Un posto privato per ciò che conta."
-      },
-      "description": {
-        "en": "Import or share useful content, review the information and keep it organized. REMORIQ is in development for Android, with core workflows designed to work offline.",
-        "it": "Importa o condividi un contenuto utile, controlla le informazioni e conservale in ordine. REMORIQ è in sviluppo per Android, con flussi principali progettati per funzionare offline."
-      },
-      "highlights": [
-        {"en": "Local-first", "it": "Local-first"},
-        {"en": "Privacy focused", "it": "Privacy al centro"},
-        {"en": "No account required", "it": "Nessun account richiesto"}
-      ],
+      "summary": {"en": "Receipts, documents and reminders. A private place to keep what matters.", "it": "Ricevute, documenti e promemoria. Un posto privato per ciò che conta."},
+      "description": {"en": "Import or share useful content, review the information and keep it organized. REMORIQ is in development for Android, with core workflows designed to work offline.", "it": "Importa o condividi un contenuto utile, controlla le informazioni e conservale in ordine. REMORIQ è in sviluppo per Android, con flussi principali progettati per funzionare offline."},
+      "highlights": [{"en": "Local-first", "it": "Local-first"}, {"en": "Privacy focused", "it": "Privacy al centro"}, {"en": "No account required", "it": "Nessun account richiesto"}],
       "icon": {"src": "/assets/remoriq-icon.png", "width": 320, "height": 320},
-      "preview": {
-        "src": "/assets/remoriq-home.jpg", "width": 698, "height": 1536, "shape": "portrait",
-        "alt": {"en": "REMORIQ Home screen", "it": "Schermata Home di REMORIQ"}
-      }
+      "preview": {"src": "/assets/remoriq-home.jpg", "width": 698, "height": 1536, "shape": "portrait", "alt": {"en": "REMORIQ Home screen", "it": "Schermata Home di REMORIQ"}}
+    },
+    {
+      "id": "foundrypreflightnext",
+      "name": "FoundryPreflightNext",
+      "kind": "tool",
+      "status": "beta",
+      "platforms": ["Windows"],
+      "url": "/foundrypreflightnext/",
+      "support_url": "/foundrypreflightnext/support/",
+      "privacy_url": "/foundrypreflightnext/privacy/",
+      "featured": false,
+      "home_visible": false,
+      "category": {"en": "Foundry VTT companion utility", "it": "Utility di supporto a Foundry VTT"},
+      "summary": {"en": "A Windows companion utility for Foundry VTT: profiles, connectivity checks, ZeroTier, firewall verification, backups and guided session preparation.", "it": "Una utility Windows di supporto a Foundry VTT: profili, controlli di connettività, ZeroTier, verifica firewall, backup e preparazione guidata della sessione."},
+      "description": {"en": "Bring recurring Foundry VTT preparation tasks into one guided Windows workflow, with separate Master and Player needs in mind.", "it": "Riunisce le attività ricorrenti di preparazione di Foundry VTT in un unico flusso Windows guidato, tenendo distinte le esigenze di Master e Player."},
+      "highlights": [{"en": "Master & Player workflows", "it": "Flussi Master e Player"}, {"en": "Connectivity checks", "it": "Controlli di connettività"}, {"en": "Backup tools", "it": "Strumenti di backup"}],
+      "icon": {"src": "/assets/circuitahead-logo.webp", "width": 724, "height": 543}
     }
   ]
 }
