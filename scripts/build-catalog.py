@@ -1,4 +1,4 @@
-"""Render the shared product directory as static HTML. Python standard library only."""
+'Render the shared product directory as static HTML. Python standard library only.'
 from pathlib import Path
 from html import escape
 import argparse
@@ -9,7 +9,11 @@ import sys
 
 ROOT = Path(__file__).resolve().parents[1]
 DOMAIN = 'https://circuitahead.com'
-KINDS = {'app': {'en': 'App', 'it': 'App'}, 'game': {'en': 'Game', 'it': 'Gioco'}}
+KINDS = {
+    'app': {'en': 'App', 'it': 'App'},
+    'tool': {'en': 'Tool', 'it': 'Strumento'},
+    'game': {'en': 'Game', 'it': 'Gioco'},
+}
 STATUSES = {
     'development': {'en': 'In development', 'it': 'In sviluppo'},
     'beta': {'en': 'Beta', 'it': 'Beta'},
@@ -58,6 +62,8 @@ def read_products():
         urls.add(product['url'])
         if not product['platforms'] or not all(isinstance(p, str) and p.strip() for p in product['platforms']):
             raise ValueError(f'Missing platforms: {slug}')
+        if 'home_visible' in product and not isinstance(product['home_visible'], bool):
+            raise ValueError(f'Invalid home visibility flag: {slug}')
         for field in ('url', 'support_url', 'privacy_url'):
             url = product[field]
             if not re.fullmatch(r'/(?:[a-z0-9-]+/)+', url) or not (ROOT / url.lstrip('/') / 'index.html').is_file():
@@ -110,7 +116,7 @@ def home_products(products):
     {text('a', pair(f'Discover {name} ↗', f'Scopri {name} ↗'), f'href="{product["url"]}" class="product-link"')}
   </div>{artwork}
 </article>'''
-    other = [p for p in products if p['id'] != product['id']]
+    other = [p for p in products if p['id'] != product['id'] and p.get('home_visible', True)]
     return featured + ('\n<div class="home-product-grid">' + '\n'.join(card(p, 'h3') for p in other) + '</div>' if other else '')
 
 def header():
@@ -123,7 +129,7 @@ def header():
 <nav class="mobile-nav" id="mobile-navigation" aria-label="Mobile navigation">{links}</nav></header>'''
 
 def footer():
-    return '<footer class="catalog-footer"><div class="container">' + text('p', pair('Independent apps and games by CircuitAhead.', 'App e giochi indipendenti di CircuitAhead.')) + '<nav aria-label="Footer">' + text('a', pair('Products', 'Prodotti'), 'href="/products/"') + text('a', pair('Support', 'Supporto'), 'href="/help/"') + text('a', pair('Product privacy policies', 'Privacy dei prodotti'), 'href="/legal/"') + '</nav><p>© <span id="current-year">2026</span> CircuitAhead.</p></div></footer>'
+    return '<footer class="catalog-footer"><div class="container">' + text('p', pair('Independent apps, tools and games by CircuitAhead.', 'App, strumenti e giochi indipendenti di CircuitAhead.')) + '<nav aria-label="Footer">' + text('a', pair('Products', 'Prodotti'), 'href="/products/"') + text('a', pair('Support', 'Supporto'), 'href="/help/"') + text('a', pair('Product privacy policies', 'Privacy dei prodotti'), 'href="/legal/"') + '</nav><p>© <span id="current-year">2026</span> CircuitAhead.</p></div></footer>'
 
 def page(slug, title, description, content, structured):
     path = f'/{slug}/'
@@ -159,17 +165,20 @@ def directory(products, kind):
 
 def render(products):
     intros = {
-        'products': (pair('Products | CircuitAhead', 'Prodotti | CircuitAhead'), pair('Apps and games. Each with its own identity.', 'App e giochi. Ognuno con la propria identità.'), pair('Explore CircuitAhead projects: features, images, platforms and availability to find what interests you.', 'Esplora i progetti CircuitAhead: funzioni, immagini, piattaforme e disponibilità, per trovare quello che ti interessa.')),
-        'help': (pair('Product support | CircuitAhead', 'Supporto prodotti | CircuitAhead'), pair('Choose the product. Find the right help.', 'Scegli il prodotto. Trova il supporto giusto.'), pair('Support, frequently asked questions and contacts are organized by product. Start with the app or game you are using.', 'Assistenza, domande frequenti e contatti sono organizzati per prodotto. Parti dall’app o dal gioco che stai usando.')),
-        'legal': (pair('Product privacy policies | CircuitAhead', 'Privacy dei prodotti | CircuitAhead'), pair('The right information for each product.', 'Le informazioni giuste per ogni prodotto.'), pair('Each product has its own privacy information. Features, permissions and services can differ between apps and games: choose the product you want to learn about.', 'Ogni prodotto ha le proprie informazioni sulla privacy. Funzioni, permessi e servizi possono essere diversi tra app e giochi: scegli il prodotto che ti interessa.')),
+        'products': (pair('Products | CircuitAhead', 'Prodotti | CircuitAhead'), pair('Apps, tools and games. Each with its own identity.', 'App, strumenti e giochi. Ognuno con la propria identità.'), pair('Explore CircuitAhead products: features, images, platforms and availability to find what interests you.', 'Esplora i prodotti CircuitAhead: funzioni, immagini, piattaforme e disponibilità, per trovare quello che ti interessa.')),
+        'help': (pair('Product support | CircuitAhead', 'Supporto prodotti | CircuitAhead'), pair('Choose the product. Find the right help.', 'Scegli il prodotto. Trova il supporto giusto.'), pair('Support, frequently asked questions and contacts are organized by product. Start with the app, tool or game you are using.', 'Assistenza, domande frequenti e contatti sono organizzati per prodotto. Parti dall’app, dallo strumento o dal gioco che stai usando.')),
+        'legal': (pair('Product privacy policies | CircuitAhead', 'Privacy dei prodotti | CircuitAhead'), pair('The right information for each product.', 'Le informazioni giuste per ogni prodotto.'), pair('Each product has its own privacy information. Features, permissions and services can differ between apps, tools and games: choose the product you want to learn about.', 'Ogni prodotto ha le proprie informazioni sulla privacy. Funzioni, permessi e servizi possono essere diversi tra app, strumenti e giochi: scegli il prodotto che ti interessa.')),
     }
     result = {}
     for slug, (title, heading, description) in intros.items():
         intro = '<section class="catalog-intro"><div class="container">' + text('p', pair('CIRCUITAHEAD', 'CIRCUITAHEAD'), 'class="section-eyebrow reveal"') + text('h1', heading, 'class="reveal"') + text('p', description, 'class="catalog-intro-copy reveal"') + '</div></section>'
         if slug == 'products':
             controls = ''
-            if len({p['kind'] for p in products}) > 1:
-                controls = '<div class="catalog-filters" role="group" aria-label="Product categories" data-aria-en="Product categories" data-aria-it="Categorie di prodotti">' + ''.join(text('button', label, f'type="button" data-product-filter="{key}" hidden aria-pressed="{str(key=="all").lower()}"') for key, label in [('all',pair('All','Tutti')),('app',pair('Apps','App')),('game',pair('Games','Giochi'))]) + '</div>'
+            present = {p['kind'] for p in products}
+            if len(present) > 1:
+                labels = {'app': pair('Apps','App'), 'tool': pair('Tools','Strumenti'), 'game': pair('Games','Giochi')}
+                filter_defs = [('all', pair('All','Tutti'))] + [(key, labels[key]) for key in KINDS if key in present]
+                controls = '<div class="catalog-filters" role="group" aria-label="Product categories" data-aria-en="Product categories" data-aria-it="Categorie di prodotti">' + ''.join(text('button', label, f'type="button" data-product-filter="{key}" hidden aria-pressed="{str(key=="all").lower()}"') for key, label in filter_defs) + '</div>'
             body = '<section class="catalog-section"><div class="container" data-catalog>' + controls + '<p class="catalog-count" data-catalog-status role="status"></p><div class="catalog-grid" data-count="' + str(len(products)) + '">' + '\n'.join(card(p) for p in products) + '</div></div></section>'
         else:
             body = '<section class="catalog-section"><div class="container">' + directory(products, slug) + text('p', pair('For general questions about CircuitAhead, write to ', 'Per domande generali su CircuitAhead, scrivi a '), 'class="catalog-contact"') + '<a class="catalog-email" href="mailto:contact@circuitahead.com">contact@circuitahead.com</a></div></section>'
