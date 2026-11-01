@@ -60,5 +60,23 @@ class CatalogTests(unittest.TestCase):
         self.assertIn('data-preview-shape="landscape"', source)
         self.assertIn('data-product-id="test-app"', source)
 
+    def test_tool_can_be_listed_without_displacing_featured_app(self):
+        tool = deepcopy(self.game)
+        tool.update(id='test-tool', name='Test Tool', kind='tool', home_visible=False)
+        products = self.products + [tool]
+        source = builder.render(products)['products/index.html']
+        tags = Elements(source).tags
+        self.assertEqual({attrs['data-product-filter'] for _, attrs in tags if 'data-product-filter' in attrs}, {'all', 'app', 'tool'})
+        self.assertIn('data-product-id="test-tool"', source)
+        home = builder.home_products(products)
+        self.assertIn('data-featured-product="test-app"', home)
+        self.assertNotIn('test-tool', home)
+
+    def test_catalog_preview_keeps_landscape_image_and_product_link(self):
+        self.game['catalog_preview'] = self.game['preview']
+        tags = Elements(builder.card(self.game)).tags
+        self.assertTrue(any(tag == 'a' and attrs.get('class') == 'catalog-preview' and attrs.get('href') == '/test-game/' for tag, attrs in tags))
+        self.assertTrue(any(tag == 'img' and attrs.get('src') == '/assets/circuitahead-logo.webp' and attrs.get('width') == '724' and attrs.get('height') == '543' for tag, attrs in tags))
+
 if __name__ == '__main__':
     unittest.main()

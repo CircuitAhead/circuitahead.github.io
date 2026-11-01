@@ -19,7 +19,7 @@
     },
     {
       "id": "foundrypreflightnext",
-      "name": "FoundryPreflightNext",
+      "name": "Foundry Preflight Next",
       "kind": "tool",
       "status": "beta",
       "platforms": ["Windows"],
@@ -32,7 +32,8 @@
       "summary": {"en": "A Windows companion utility for Foundry VTT: profiles, connectivity checks, ZeroTier, firewall verification, backups and guided session preparation.", "it": "Una utility Windows di supporto a Foundry VTT: profili, controlli di connettività, ZeroTier, verifica firewall, backup e preparazione guidata della sessione."},
       "description": {"en": "Bring recurring Foundry VTT preparation tasks into one guided Windows workflow, with separate Master and Player needs in mind.", "it": "Riunisce le attività ricorrenti di preparazione di Foundry VTT in un unico flusso Windows guidato, tenendo distinte le esigenze di Master e Player."},
       "highlights": [{"en": "Master & Player workflows", "it": "Flussi Master e Player"}, {"en": "Connectivity checks", "it": "Controlli di connettività"}, {"en": "Backup tools", "it": "Strumenti di backup"}],
-      "icon": {"src": "/assets/circuitahead-logo.webp", "width": 724, "height": 543}
+      "icon": {"src": "/assets/circuitahead-logo.webp", "width": 724, "height": 543},
+      "catalog_preview": {"src": "/assets/foundry-dashboard.webp", "width": 1586, "height": 992, "alt": {"en": "Foundry Preflight Next — demonstration dashboard", "it": "Foundry Preflight Next — dashboard dimostrativa"}}
     }
   ]
 }

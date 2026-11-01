@@ -246,8 +246,9 @@ import translations from "./translations.js?v=7c9feab8c778";
     const image = document.getElementById('screen-image');
     image.src = choice.href;
     motion?.transitionImage(image);
-    const preview = panel.querySelector('[data-preview]');
-    preview.href = choice.href; preview.dataset.preview = choice.dataset.shot;
+    panel.querySelectorAll('[data-preview]').forEach(preview => {
+      preview.href = choice.href; preview.dataset.preview = choice.dataset.shot;
+    });
     document.getElementById('screen-count').textContent = `${String(selected + 1).padStart(2, '0')} / ${String(choices.length).padStart(2, '0')}`;
     updateGalleryText();
     if (moveFocus) choice.focus({preventScroll: true});
@@ -256,7 +257,7 @@ import translations from "./translations.js?v=7c9feab8c778";
     const tablist = gallery.querySelector('.screen-choices');
     tablist.setAttribute('role', 'tablist');
     const smallGallery = matchMedia('(max-width: 700px)');
-    const orient = () => tablist.setAttribute('aria-orientation', smallGallery.matches ? 'horizontal' : 'vertical');
+    const orient = () => tablist.setAttribute('aria-orientation', gallery.dataset.galleryOrientation === 'horizontal' || smallGallery.matches ? 'horizontal' : 'vertical');
     orient(); listenMedia(smallGallery, orient);
     panel.setAttribute('role', 'tabpanel'); panel.tabIndex = 0;
     choices.forEach((choice, index) => {
@@ -341,7 +342,7 @@ import translations from "./translations.js?v=7c9feab8c778";
   document.querySelectorAll('#current-year,#rq-year').forEach(element => { element.textContent = String(new Date().getFullYear()); });
   applyLanguage(language);
   // Animation loading must never block translation, navigation or app previews.
-  import('./motion.js?v=566dda1c863f').then(({createMotion}) => {
+  import('./motion.js?v=f7709adb1d66').then(({createMotion}) => {
     motion = createMotion();
   }).catch(() => { /* Core content and interactions remain available. */ });
 })();

@@ -175,11 +175,15 @@ export function createMotion() {
       '.screen-choices', '.screen-description', '.screen-panel', '.rq-note',
       '.rq-privacy p', '.rq-privacy ul', '.support-check-list > div',
       '.support-security-card p', '.support-report-card p', '.support-report-actions',
-      '.statement-card > p', '.footer-main', '.footer-bottom', '.rq-footer-inner'
+      '.statement-card > p', '.footer-main', '.footer-bottom', '.rq-footer-inner',
+      '.fp-kicker', '.fp-product', '.fp-lead', '.fp-badges', '.fp-actions',
+      '.fp-status-note', '.fp-hero-preview', '.fp-eyebrow', '.fp-sub',
+      '.fp-feature', '.fp-role', '.fp-principle', '.fp-preview-note',
+      '.fp-contact-card', '.fp-beta-copy > p', '.product-directory-entry--text p'
     ].join(',');
     document.querySelectorAll(entrances).forEach(element => {
       if (candidates.has(element) || [...element.querySelectorAll('h1,h2')].some(heading => candidates.has(heading))) return;
-      const visual = element.matches('.hero-visual,.support-hero-visual,.privacy-hero-visual,.rq-device-button,.screen-panel');
+      const visual = element.matches('.hero-visual,.support-hero-visual,.privacy-hero-visual,.rq-device-button,.screen-panel,.fp-hero-preview');
       candidates.set(element, visual ? 'visual' : 'rise');
     });
     // Only one entrance effect per branch; nested text is revealed by its card.

@@ -72,7 +72,7 @@ def read_products():
             if field == 'summary' or field in product:
                 if not all(product[field].get(lang, '').strip() for lang in ('en', 'it')):
                     raise ValueError(f'Missing bilingual {field}: {slug}')
-        for field in ('icon', 'preview'):
+        for field in ('icon', 'preview', 'catalog_preview'):
             if field not in product:
                 continue
             asset = product[field]
@@ -88,9 +88,12 @@ def card(product, heading='h2'):
     name = product['name']
     tags = text('span', KINDS[product['kind']]) + text('span', STATUSES[product['status']])
     platforms = ''.join(f'<span>{escape(platform)}</span>' for platform in product['platforms'])
+    preview = product.get('catalog_preview')
+    artwork = f'<a class="catalog-preview" href="{product["url"]}">{image(preview, preview["alt"])}</a>' if preview else ''
     return f'''<article class="catalog-card reveal" data-catalog-product data-product-kind="{product['kind']}" data-product-id="{product['id']}">
   <div class="catalog-card-top">{image(product['icon'], name)}<div class="catalog-tags">{tags}</div></div>
   <{heading}>{escape(name)}</{heading}>
+{artwork}
   {text('p', product['summary'], 'class="catalog-summary"')}
   <div class="catalog-platforms">{platforms}</div>
   <div class="catalog-card-actions">{text('a', pair(f'Discover {name} →', f'Scopri {name} →'), f'href="{product["url"]}" class="button button-primary"')}</div>

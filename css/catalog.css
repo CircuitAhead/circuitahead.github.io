@@ -14,6 +14,9 @@
 .catalog-tags { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; }
 .catalog-tags span { padding: 6px 9px; border: 1px solid #dce8f8; border-radius: 9px; background: #f5f9ff; color: #31577f; font-size: .7rem; font-weight: 700; }
 .catalog-card h2, .catalog-card h3 { margin: 24px 0 12px; color: #071a43; font-size: 1.8rem !important; line-height: 1.1; letter-spacing: -.04em; }
+.catalog-card h2, .catalog-card h3, .product-directory-entry h2 { overflow-wrap: anywhere; }
+.catalog-preview { display: block; margin: 6px 0 20px; overflow: hidden; border: 1px solid #dce5f1; border-radius: 14px; background: #031522; }
+.catalog-preview img { display: block; width: 100%; height: auto; }
 .catalog-summary { max-width: 650px; margin: 0; color: #52647e; font-size: 1rem; line-height: 1.7; }
 .catalog-platforms { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 16px; color: #52647e; font-size: .8rem; }
 .catalog-card-actions { margin-top: 24px; }
@@ -29,6 +32,8 @@
 .product-directory-entry h2 { margin: 0 0 7px; color: #071a43; font-size: 1.4rem; line-height: 1.15; letter-spacing: -.03em; }
 .product-directory-entry p { max-width: 640px; margin: 0; color: #52647e; font-size: .9rem; line-height: 1.65; }
 .product-directory-entry .button { max-width: 100%; font-size: .85rem; text-align: center; }
+.product-directory-entry--text { grid-template-columns: minmax(0, 1fr) auto; }
+.product-directory-entry--text p { max-width: 850px; }
 .catalog-contact { display: inline-block; margin: 32px 5px 0 0; color: #52647e; font-size: .9rem; }
 .catalog-email { display: inline-block; padding-block: 8px; color: #0758e8; font-size: .9rem; font-weight: 700; overflow-wrap: anywhere; }
 .catalog-footer { padding-block: 30px 24px; border-top: 1px solid #e1e9f4; color: #52647e; font-size: .8rem; }
@@ -45,6 +50,7 @@
   .product-directory-entry { grid-template-columns: 54px minmax(0, 1fr); gap: 18px; }
   .product-directory-entry img { width: 54px; height: 54px; }
   .product-directory-entry .button { grid-column: 1 / -1; justify-self: start; }
+  .product-directory-entry--text { grid-template-columns: minmax(0, 1fr); }
 }
 @media (max-width: 700px) {
   .catalog-intro { padding-block: 36px 24px; }

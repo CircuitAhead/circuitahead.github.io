@@ -15,6 +15,9 @@ CircuitAhead is the shared brand. Every product has its own landing page, copy, 
 | `/remoriq/` | REMORIQ-specific landing page and real app gallery |
 | `/support/` | Existing REMORIQ support URL, retained for compatibility |
 | `/privacy/` | Existing REMORIQ privacy policy URL, retained for compatibility |
+| `/foundrypreflightnext/` | Foundry Preflight Next beta project and demonstration gallery |
+| `/foundrypreflightnext/support/` | Foundry Preflight Next support through CircuitAhead |
+| `/foundrypreflightnext/privacy/` | Foundry Preflight Next privacy information |
 
 The source of truth for shared product listings is `data/products.json`. The Python standard-library generator updates the Home product area, the three shared directories and the sitemap:
 
@@ -28,10 +31,10 @@ Generated pages are committed and work without JavaScript. There is no browser-s
 
 1. Create its own directory and landing page, for example `/new-product/index.html`. `templates/product-page.html.template` is a product-neutral starting point; replace every token with verified information. App and game pages can use different compositions, images and their own stylesheet.
 2. Prepare accurate support and privacy pages for that product, normally `/new-product/support/` and `/new-product/privacy/`. REMORIQ's existing shorter URLs remain valid. Policies must reflect the new product's actual behavior.
-3. Add a record to `data/products.json`: unique `id`, `name`, `kind` (`app` or `game`), `status` (`development`, `beta` or `available`), `platforms`, `url`, `support_url`, `privacy_url`, bilingual `summary`, and an `icon` with real file path and dimensions. `description`, `category`, `highlights`, `preview` and `featured` are optional. Preview shape can be `portrait` or `landscape`. At most one product is featured.
+3. Add a record to `data/products.json`: unique `id`, `name`, `kind` (`app`, `tool` or `game`), `status` (`development`, `beta` or `available`), `platforms`, `url`, `support_url`, `privacy_url`, bilingual `summary`, and an `icon` with real file path and dimensions. `description`, `category`, `highlights`, `preview` and `featured` are optional. Preview shape can be `portrait` or `landscape`. An optional `catalog_preview` image, with dimensions and bilingual `alt`, adds artwork to its catalog card. At most one product is featured.
 4. Run the generator and the checks below. The new product is then included automatically in the catalog, Home, support directory, privacy directory and sitemap. Do not add store links, release claims or prices before they are verified.
 
-The Home's featured slot is selected by `featured: true`; if absent it uses the first product. Other products appear in the additional-products grid. Product-specific design and content remain in the product's own page, rather than becoming conditional code in the Home or shared JavaScript.
+The Home's featured slot is selected by `featured: true`; if absent it uses the first product. Other products appear in the additional-products grid unless `home_visible: false`. Foundry Preflight Next is intentionally catalog-only; REMORIQ remains featured. Product-specific design and content remain in the product's own page, rather than becoming conditional code in the Home or shared JavaScript.
 
 ## Shared components
 
@@ -45,11 +48,14 @@ A gallery reads its images, labels and count from that page's HTML. It supports 
 
 - `data-product-name` on the body.
 - One `[data-gallery]` container with `data-gallery-count` declaring the intended number of images.
+- For a landscape gallery with tabs in one row at every width, use `data-gallery-orientation="horizontal"`.
 - A `.screen-choices` element containing `[data-shot]` anchors with unique IDs, real image `href`s, bilingual label spans, `data-title-en` / `data-title-it`, `data-description-en` / `data-description-it`, and image dimensions in `data-width` / `data-height` when they differ between images.
 - `#screen-panel`, `#screen-image` with width and height, `#screen-title`, `#screen-description`, and `#screen-count`.
 - A `[data-preview]` anchor inside the panel, whose key matches a `data-shot`. Hero previews can use the same keys.
 
 The native dialog supports original dimensions, previous/next, fit, Escape and opening the original file. Its paths and labels come from the product's anchors. Real REMORIQ screenshots remain in `assets/remoriq-*.jpg` as their original 698 × 1536 files.
+
+Foundry Preflight Next uses the three supplied demonstration images in `assets/foundry-*.webp`, at the original 1586 × 992 dimensions. They illustrate the project with sample data and are labeled accordingly; no public release/download is implied.
 
 ### Styling and motion
 
